@@ -1,0 +1,6 @@
+{
+  "name": "ClarifyU — Intelligent Doubt-Clearing Assistant",
+  "description": "AI-powered doubt-resolution and peer-learning platform connecting first-year students with instant AI guidance, senior mentors, faculty, and curated learning resources.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
