@@ -33,43 +33,43 @@ export const MentorsView: React.FC<MentorsViewProps> = ({
   }, [mentors, roleFilter, searchQuery]);
 
   return (
-    <div className="space-y-7">
+    <div className="space-y-6">
       {/* Header */}
-      <div className="pb-4 border-b border-[#EAE8E5]">
-        <h1 className="text-[22px] font-semibold tracking-[-0.02em] text-[#222222]">
+      <div>
+        <h1 className="text-[26px] sm:text-[30px] font-bold tracking-[-0.025em] text-[#221D1E]">
           Mentors
         </h1>
-        <p className="mt-0.5 text-[13.5px] text-[#858585]">
+        <p className="mt-0.5 text-[13.5px] text-[#7B6F71]">
           Course faculty and senior undergraduate mentors available for one-on-one clarification.
         </p>
       </div>
 
-      {/* Filters */}
+      {/* iOS Search & Segmented Filter */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div className="relative flex-1 max-w-md">
           <Search
-            className="w-4 h-4 text-[#858585] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none"
-            strokeWidth={1.75}
+            className="w-4 h-4 text-[#7B6F71] absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none"
+            strokeWidth={1.85}
           />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search by name, department, or topic..."
-            className="w-full pl-9 pr-3 py-1.5 bg-[#FFFFFF] border border-[#EAE8E5] rounded-md text-[13.5px] text-[#222222] placeholder:text-[#858585] focus:outline-none focus:border-[#A99AE8]"
+            className="w-full min-h-[42px] pl-10 pr-3.5 py-2 bg-[#FFFFFF] border border-[#EFE2E2] rounded-xl text-[14px] text-[#221D1E] placeholder:text-[#7B6F71] focus:outline-none focus:border-[#C45B72]"
           />
         </div>
 
-        <div className="inline-flex items-center border border-[#EAE8E5] rounded-md bg-[#FFFFFF] p-0.5 self-start">
+        <div className="inline-flex items-center bg-[#F4E3E3] p-1 rounded-xl self-start">
           {(['All', 'Faculty', 'Senior Mentor'] as const).map((tab) => (
             <button
               key={tab}
               type="button"
               onClick={() => setRoleFilter(tab)}
-              className={`px-3 py-1 rounded text-[12.5px] transition-colors whitespace-nowrap shrink-0 ${
+              className={`min-h-[34px] px-3.5 py-1 rounded-lg text-[12.5px] transition-all whitespace-nowrap shrink-0 ${
                 roleFilter === tab
-                  ? 'bg-[#F3E8E7] text-[#222222] font-medium'
-                  : 'text-[#858585] hover:text-[#222222]'
+                  ? 'bg-[#FFFFFF] text-[#221D1E] font-semibold shadow-[0_1px_2px_rgba(166,66,88,0.08)]'
+                  : 'text-[#7B6F71] hover:text-[#221D1E] font-medium'
               }`}
             >
               {tab === 'Senior Mentor' ? 'Senior Mentors' : tab}
@@ -78,10 +78,10 @@ export const MentorsView: React.FC<MentorsViewProps> = ({
         </div>
       </div>
 
-      {/* Clean Compact Directory */}
-      <div className="border border-[#EAE8E5] rounded-lg bg-[#FFFFFF] divide-y divide-[#EAE8E5]">
+      {/* iOS Inset Grouped Mentor Directory */}
+      <div className="border border-[#EFE2E2] rounded-2xl bg-[#FFFFFF] divide-y divide-[#EFE2E2] overflow-hidden shadow-[0_1px_3px_rgba(166,66,88,0.04)]">
         {filteredMentors.length === 0 ? (
-          <div className="py-12 px-6 text-center text-[13.5px] text-[#858585]">
+          <div className="py-12 px-6 text-center text-[13.5px] text-[#7B6F71]">
             No mentors match your search.
           </div>
         ) : (
@@ -102,19 +102,19 @@ export const MentorsView: React.FC<MentorsViewProps> = ({
 
                   <div className="min-w-0 space-y-1">
                     <div className="flex flex-wrap items-center gap-2">
-                      <h2 className="text-[15px] font-semibold text-[#222222]">
+                      <h2 className="text-[15px] font-semibold text-[#221D1E]">
                         {mentor.name}
                       </h2>
-                      <span className="text-[12px] text-[#858585]">
+                      <span className="text-[12px] text-[#7B6F71]">
                         {mentor.role} · {mentor.yearOrTitle}
                       </span>
                     </div>
 
-                    <p className="text-[13px] text-[#858585]">
+                    <p className="text-[13px] text-[#7B6F71]">
                       {mentor.department}
                     </p>
 
-                    <p className="text-[13px] text-[#222222]/85">
+                    <p className="text-[13px] text-[#221D1E]/85">
                       {mentor.expertise.join(' · ')}
                     </p>
                   </div>
@@ -122,10 +122,10 @@ export const MentorsView: React.FC<MentorsViewProps> = ({
 
                 <div className="flex sm:flex-col items-center sm:items-end justify-between gap-2 shrink-0">
                   <span
-                    className={`text-[12px] px-2 py-0.5 rounded border whitespace-nowrap ${
+                    className={`text-[12px] font-medium px-2.5 py-0.5 rounded-lg border whitespace-nowrap ${
                       mentor.isAvailableNow
-                        ? 'border-[#D5CEF2] bg-[#F6F4FC] text-[#222222]'
-                        : 'border-[#EAE8E5] bg-[#FAF9F7] text-[#858585]'
+                        ? 'border-[#F2CECA] bg-[#FFE4E1]/70 text-[#A64258]'
+                        : 'border-[#EFE2E2] bg-[#FCF6F6] text-[#7B6F71]'
                     }`}
                   >
                     {mentor.availability}
@@ -134,15 +134,15 @@ export const MentorsView: React.FC<MentorsViewProps> = ({
                   <button
                     type="button"
                     onClick={() => onRequestHelp(mentor)}
-                    className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-md border text-[13px] font-medium transition-colors whitespace-nowrap shrink-0 ${
+                    className={`min-h-[40px] inline-flex items-center gap-1.5 px-4 py-1.5 rounded-xl text-[13px] font-semibold transition-all whitespace-nowrap shrink-0 active:scale-[0.97] ${
                       existingRequest
-                        ? 'border-[#EAE8E5] bg-[#FAF9F7] text-[#222222]'
-                        : 'border-[#EAE8E5] bg-[#FFFFFF] text-[#222222] hover:border-[#A99AE8] hover:bg-[#F3E8E7]/40'
+                        ? 'border border-[#EFE2E2] bg-[#FCF6F6] text-[#A64258]'
+                        : 'bg-[#FFE4E1] text-[#A64258] hover:bg-[#F7D3CF]'
                     }`}
                   >
                     {existingRequest ? (
                       <>
-                        <Check className="w-3.5 h-3.5 text-[#5B4BB7]" strokeWidth={1.75} />
+                        <Check className="w-3.5 h-3.5 text-[#C45B72]" strokeWidth={2} />
                         <span>Requested</span>
                       </>
                     ) : (
@@ -158,20 +158,20 @@ export const MentorsView: React.FC<MentorsViewProps> = ({
 
       {sentRequests.length > 0 && (
         <section className="space-y-2.5">
-          <h3 className="text-[13.5px] font-medium text-[#858585]">
-            Your active mentor requests
+          <h3 className="text-[13.5px] font-semibold text-[#7B6F71] px-1">
+            Active mentor requests
           </h3>
-          <ul className="border border-[#EAE8E5] rounded-lg bg-[#FFFFFF] divide-y divide-[#EAE8E5]">
+          <ul className="border border-[#EFE2E2] rounded-2xl bg-[#FFFFFF] divide-y divide-[#EFE2E2] overflow-hidden">
             {sentRequests.map((req) => (
               <li
                 key={req.id}
-                className="px-4 py-3 flex flex-wrap items-center justify-between gap-2 text-[13.5px]"
+                className="px-4 py-3.5 flex flex-wrap items-center justify-between gap-2 text-[13.5px]"
               >
                 <div className="min-w-0">
-                  <span className="font-medium text-[#222222]">{req.mentorName}</span>
-                  <span className="text-[#858585]"> · {req.topic}</span>
+                  <span className="font-semibold text-[#221D1E]">{req.mentorName}</span>
+                  <span className="text-[#7B6F71]"> · {req.topic}</span>
                 </div>
-                <span className="text-[12px] text-[#858585]">{req.createdAt}</span>
+                <span className="text-[12px] font-medium text-[#A64258]">{req.createdAt}</span>
               </li>
             ))}
           </ul>

@@ -5,13 +5,15 @@ interface AvatarProps {
   alt: string;
   initials: string;
   sizeClass?: string;
+  roundedClass?: string;
 }
 
 export const Avatar: React.FC<AvatarProps> = ({
   src,
   alt,
   initials,
-  sizeClass = 'w-9 h-9',
+  sizeClass = 'w-10 h-10',
+  roundedClass = 'rounded-full',
 }) => {
   const [failed, setFailed] = useState(false);
 
@@ -19,7 +21,7 @@ export const Avatar: React.FC<AvatarProps> = ({
     return (
       <div
         aria-label={alt}
-        className={`${sizeClass} shrink-0 rounded-md border border-[#EAE8E5] bg-[#F3E8E7] flex items-center justify-center text-xs font-medium text-[#222222] select-none`}
+        className={`${sizeClass} shrink-0 ${roundedClass} border border-[#EFE2E2] bg-[#FFE4E1] flex items-center justify-center text-xs font-semibold text-[#A64258] select-none`}
       >
         {initials}
       </div>
@@ -32,7 +34,7 @@ export const Avatar: React.FC<AvatarProps> = ({
       alt={alt}
       referrerPolicy="no-referrer"
       onError={() => setFailed(true)}
-      className={`${sizeClass} shrink-0 rounded-md border border-[#EAE8E5] object-cover bg-[#F3E8E7]`}
+      className={`${sizeClass} shrink-0 ${roundedClass} border border-[#EFE2E2] object-cover bg-[#FFE4E1]`}
     />
   );
 };

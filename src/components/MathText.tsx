@@ -78,7 +78,7 @@ export const MathText: React.FC<MathTextProps> = ({ text, className = '' }) => {
           return (
             <code
               key={idx}
-              className="mx-0.5 rounded bg-[#F3E8E7]/70 px-1.5 py-0.5 font-mono text-[0.86em] text-[#222222]"
+              className="mx-0.5 rounded-md bg-[#FFE4E1]/75 px-1.5 py-0.5 font-mono text-[0.86em] text-[#221D1E]"
             >
               {seg.value}
             </code>

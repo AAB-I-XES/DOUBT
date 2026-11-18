@@ -72,13 +72,13 @@ export const ResourcesView: React.FC<ResourcesViewProps> = ({
   }, [resources, subjectFilter, typeFilter, searchQuery]);
 
   return (
-    <div className="space-y-7">
+    <div className="space-y-6">
       {/* Header */}
-      <div className="pb-4 border-b border-[#EAE8E5]">
-        <h1 className="text-[22px] font-semibold tracking-[-0.02em] text-[#222222]">
+      <div>
+        <h1 className="text-[26px] sm:text-[30px] font-bold tracking-[-0.025em] text-[#221D1E]">
           Resources
         </h1>
-        <p className="mt-0.5 text-[13.5px] text-[#858585]">
+        <p className="mt-0.5 text-[13.5px] text-[#7B6F71]">
           Curated lecture notes, formula sheets, and problem sets for first-year courses.
         </p>
       </div>
@@ -88,15 +88,15 @@ export const ResourcesView: React.FC<ResourcesViewProps> = ({
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div className="relative flex-1 max-w-md">
             <Search
-              className="w-4 h-4 text-[#858585] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none"
-              strokeWidth={1.75}
+              className="w-4 h-4 text-[#7B6F71] absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none"
+              strokeWidth={1.85}
             />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search notes, formulas, or course topics..."
-              className="w-full pl-9 pr-3 py-1.5 bg-[#FFFFFF] border border-[#EAE8E5] rounded-md text-[13.5px] text-[#222222] placeholder:text-[#858585] focus:outline-none focus:border-[#A99AE8]"
+              className="w-full min-h-[42px] pl-10 pr-3.5 py-2 bg-[#FFFFFF] border border-[#EFE2E2] rounded-xl text-[14px] text-[#221D1E] placeholder:text-[#7B6F71] focus:outline-none focus:border-[#C45B72]"
             />
           </div>
 
@@ -104,7 +104,7 @@ export const ResourcesView: React.FC<ResourcesViewProps> = ({
             aria-label="Filter by document type"
             value={typeFilter}
             onChange={(e) => setTypeFilter(e.target.value as 'All' | ResourceDocType)}
-            className="text-[13px] text-[#222222] bg-[#FFFFFF] border border-[#EAE8E5] rounded-md px-3 py-1.5 focus:outline-none focus:border-[#A99AE8] self-start sm:self-auto"
+            className="min-h-[42px] text-[13.5px] font-medium text-[#221D1E] bg-[#FFFFFF] border border-[#EFE2E2] rounded-xl px-3.5 py-2 focus:outline-none focus:border-[#C45B72] self-start sm:self-auto"
           >
             {DOC_TYPES.map((t) => (
               <option key={t} value={t}>
@@ -114,16 +114,16 @@ export const ResourcesView: React.FC<ResourcesViewProps> = ({
           </select>
         </div>
 
-        <div className="flex flex-wrap items-center gap-1.5">
+        <div className="flex items-center gap-1.5 overflow-x-auto pb-1">
           {['All', ...SUBJECT_LIST].map((subj) => (
             <button
               key={subj}
               type="button"
               onClick={() => setSubjectFilter(subj)}
-              className={`px-3 py-1 rounded-md text-[12.5px] border transition-colors whitespace-nowrap shrink-0 ${
+              className={`min-h-[36px] px-3.5 py-1.5 rounded-xl text-[13px] border transition-colors whitespace-nowrap shrink-0 ${
                 subjectFilter === subj
-                  ? 'border-[#A99AE8] bg-[#FFFFFF] text-[#222222] font-medium'
-                  : 'border-transparent text-[#858585] hover:text-[#222222] hover:bg-[#FFFFFF]/60'
+                  ? 'border-[#E7BFC4] bg-[#FFE4E1] text-[#A64258] font-semibold'
+                  : 'border-transparent bg-[#FFFFFF]/70 text-[#7B6F71] hover:text-[#221D1E] hover:bg-[#FFFFFF]'
               }`}
             >
               {subj}
@@ -132,10 +132,10 @@ export const ResourcesView: React.FC<ResourcesViewProps> = ({
         </div>
       </div>
 
-      {/* Compact List-Based Library */}
-      <div className="border border-[#EAE8E5] rounded-lg bg-[#FFFFFF] divide-y divide-[#EAE8E5]">
+      {/* iOS Inset Grouped Resource List */}
+      <div className="border border-[#EFE2E2] rounded-2xl bg-[#FFFFFF] divide-y divide-[#EFE2E2] overflow-hidden shadow-[0_1px_3px_rgba(166,66,88,0.04)]">
         {filteredResources.length === 0 ? (
-          <div className="py-12 px-6 text-center text-[13.5px] text-[#858585]">
+          <div className="py-12 px-6 text-center text-[13.5px] text-[#7B6F71]">
             No resources match your current filters.
           </div>
         ) : (
@@ -145,22 +145,22 @@ export const ResourcesView: React.FC<ResourcesViewProps> = ({
             return (
               <div
                 key={res.id}
-                className="p-4 sm:px-5 sm:py-3.5 flex items-center justify-between gap-4 hover:bg-[#FAF9F7]/70 transition-colors"
+                className="p-4 sm:px-5 sm:py-3.5 flex items-center justify-between gap-4 hover:bg-[#FCF6F6] transition-colors"
               >
                 <button
                   type="button"
                   onClick={() => setPreviewResource(res)}
                   className="flex items-start gap-3.5 min-w-0 text-left flex-1 group"
                 >
-                  <div className="w-8 h-8 rounded-md border border-[#EAE8E5] bg-[#FAF9F7] flex items-center justify-center shrink-0 mt-0.5">
-                    <Icon className="w-4 h-4 text-[#858585] group-hover:text-[#222222]" strokeWidth={1.75} />
+                  <div className="w-9 h-9 rounded-xl border border-[#F2CECA] bg-[#FFE4E1]/75 flex items-center justify-center shrink-0 mt-0.5">
+                    <Icon className="w-4 h-4 text-[#C45B72]" strokeWidth={1.85} />
                   </div>
 
                   <div className="min-w-0">
-                    <p className="text-[14.5px] font-medium text-[#222222] group-hover:text-[#5B4BB7] transition-colors truncate">
+                    <p className="text-[14.5px] font-semibold text-[#221D1E] group-hover:text-[#A64258] transition-colors truncate">
                       {res.title}
                     </p>
-                    <p className="mt-0.5 text-[12.5px] text-[#858585] flex flex-wrap items-center gap-1.5">
+                    <p className="mt-0.5 text-[12.5px] text-[#7B6F71] flex flex-wrap items-center gap-1.5">
                       <span>{res.subject}</span>
                       <span aria-hidden="true">·</span>
                       <span>{res.docType}</span>
@@ -174,15 +174,15 @@ export const ResourcesView: React.FC<ResourcesViewProps> = ({
                   type="button"
                   onClick={() => onToggleBookmark(res.id)}
                   aria-label={isBookmarked ? `Remove bookmark for ${res.title}` : `Bookmark ${res.title}`}
-                  className={`p-2 rounded-md border transition-colors shrink-0 ${
+                  className={`min-w-[42px] min-h-[42px] flex items-center justify-center rounded-xl border transition-colors shrink-0 ${
                     isBookmarked
-                      ? 'border-[#A99AE8] bg-[#F3E8E7]/60 text-[#5B4BB7]'
-                      : 'border-[#EAE8E5] bg-[#FFFFFF] text-[#858585] hover:text-[#222222]'
+                      ? 'border-[#E7BFC4] bg-[#FFE4E1] text-[#C45B72]'
+                      : 'border-[#EFE2E2] bg-[#FCF6F6] text-[#7B6F71] hover:text-[#221D1E]'
                   }`}
                 >
                   <Bookmark
-                    className={`w-4 h-4 ${isBookmarked ? 'fill-[#A99AE8]/40' : ''}`}
-                    strokeWidth={1.75}
+                    className={`w-4 h-4 ${isBookmarked ? 'fill-[#C45B72]/25' : ''}`}
+                    strokeWidth={1.85}
                   />
                 </button>
               </div>
@@ -191,21 +191,23 @@ export const ResourcesView: React.FC<ResourcesViewProps> = ({
         )}
       </div>
 
-      {/* Resource Preview Modal */}
+      {/* iOS Bottom Sheet / Desktop Dialog Resource Preview */}
       {previewResource && (
         <div
           role="dialog"
           aria-modal="true"
           aria-labelledby="resource-preview-title"
-          className="fixed inset-0 z-50 bg-[#222222]/25 flex items-center justify-center p-4"
+          className="fixed inset-0 z-50 bg-[#221D1E]/35 backdrop-blur-xs flex items-end sm:items-center justify-center sm:p-4"
         >
-          <div className="w-full max-w-xl bg-[#FAF9F7] border border-[#EAE8E5] rounded-lg p-5 sm:p-6 space-y-5">
-            <div className="flex items-start justify-between gap-4 pb-3 border-b border-[#EAE8E5]">
+          <div className="w-full sm:max-w-xl bg-[#FCF6F6] border-t sm:border border-[#EFE2E2] rounded-t-3xl sm:rounded-2xl p-5 sm:p-6 space-y-5">
+            <div className="w-10 h-1.5 bg-[#DFC8C8] rounded-full mx-auto -mt-1 sm:hidden" />
+
+            <div className="flex items-start justify-between gap-4 pb-3 border-b border-[#EFE2E2]">
               <div>
-                <p className="text-[12px] text-[#858585]">
+                <p className="text-[12px] font-medium text-[#A64258]">
                   {previewResource.subject} · {previewResource.docType} · {previewResource.author}
                 </p>
-                <h2 id="resource-preview-title" className="mt-1 text-[18px] font-semibold text-[#222222]">
+                <h2 id="resource-preview-title" className="mt-1 text-[18px] font-semibold text-[#221D1E]">
                   {previewResource.title}
                 </h2>
               </div>
@@ -213,22 +215,22 @@ export const ResourcesView: React.FC<ResourcesViewProps> = ({
                 type="button"
                 onClick={() => setPreviewResource(null)}
                 aria-label="Close resource preview"
-                className="text-[#858585] hover:text-[#222222] p-1"
+                className="min-w-[36px] min-h-[36px] flex items-center justify-center rounded-full bg-[#F4E3E3] text-[#7B6F71] hover:text-[#221D1E]"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
             <div className="space-y-2">
-              <h3 className="text-[12.5px] font-medium text-[#858585]">Summary</h3>
-              <p className="text-[14.5px] text-[#222222] leading-relaxed">
+              <h3 className="text-[12.5px] font-semibold text-[#7B6F71]">Summary</h3>
+              <p className="text-[14.5px] text-[#221D1E] leading-relaxed">
                 <MathText text={previewResource.summary} />
               </p>
             </div>
 
             {previewResource.keyEquations.length > 0 && (
               <div className="space-y-2">
-                <h3 className="text-[12.5px] font-medium text-[#858585]">Key formulas</h3>
+                <h3 className="text-[12.5px] font-semibold text-[#7B6F71]">Key formulas</h3>
                 <div className="space-y-2">
                   {previewResource.keyEquations.map((eq, i) => (
                     <MathBlock key={i} latex={eq} />
@@ -237,19 +239,19 @@ export const ResourcesView: React.FC<ResourcesViewProps> = ({
               </div>
             )}
 
-            <div className="pt-2 flex items-center justify-between border-t border-[#EAE8E5]">
+            <div className="pt-3 flex items-center justify-between border-t border-[#EFE2E2]">
               <button
                 type="button"
                 onClick={() => onToggleBookmark(previewResource.id)}
-                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-md border border-[#EAE8E5] bg-[#FFFFFF] text-[13px] text-[#222222] hover:border-[#A99AE8]"
+                className="min-h-[42px] inline-flex items-center gap-1.5 px-4 py-1.5 rounded-xl border border-[#EFE2E2] bg-[#FFFFFF] text-[13.5px] font-medium text-[#221D1E] hover:border-[#C45B72]"
               >
                 <Bookmark
-                  className={`w-3.5 h-3.5 ${
+                  className={`w-4 h-4 ${
                     bookmarkedIds.includes(previewResource.id)
-                      ? 'text-[#7D6CD6] fill-[#A99AE8]/40'
-                      : 'text-[#858585]'
+                      ? 'text-[#C45B72] fill-[#C45B72]/25'
+                      : 'text-[#7B6F71]'
                   }`}
-                  strokeWidth={1.75}
+                  strokeWidth={1.85}
                 />
                 <span>
                   {bookmarkedIds.includes(previewResource.id) ? 'Bookmarked' : 'Bookmark'}
@@ -259,7 +261,7 @@ export const ResourcesView: React.FC<ResourcesViewProps> = ({
               <button
                 type="button"
                 onClick={() => setPreviewResource(null)}
-                className="px-4 py-1.5 rounded-md bg-[#222222] text-[#FAF9F7] text-[13px] font-medium hover:bg-[#363636]"
+                className="min-h-[42px] px-5 py-1.5 rounded-xl bg-[#C45B72] text-[#FFFFFF] text-[13.5px] font-semibold hover:bg-[#A64258]"
               >
                 Done
               </button>

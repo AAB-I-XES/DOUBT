@@ -299,7 +299,7 @@ export default function App() {
   );
 
   return (
-    <div className="min-h-screen bg-[#FAF9F7] text-[#222222]">
+    <div className="min-h-screen bg-[#FCF6F6] text-[#221D1E]">
       <Sidebar
         activeTab={activeTab}
         onNavigate={(tab) => {
@@ -311,8 +311,8 @@ export default function App() {
         profile={profile}
       />
 
-      <main className="md:pl-60 pb-20 md:pb-12">
-        <div className="max-w-4xl mx-auto px-5 sm:px-8 pt-6 sm:pt-10 pb-8">
+      <main className="md:pl-64 pb-24 md:pb-12">
+        <div className="max-w-5xl mx-auto px-4 sm:px-8 pt-5 sm:pt-9 pb-8">
           {activeTab === 'overview' && (
             <OverviewView
               recentDoubts={recentDoubts}
@@ -391,23 +391,25 @@ export default function App() {
         </div>
       </main>
 
-      {/* Mentor Request Modal */}
+      {/* iOS Bottom Sheet / Desktop Modal for Mentor Help Request */}
       {requestModalMentor && (
         <div
           role="dialog"
           aria-modal="true"
           aria-labelledby="mentor-request-title"
-          className="fixed inset-0 z-50 bg-[#222222]/25 flex items-center justify-center p-4"
+          className="fixed inset-0 z-50 bg-[#221D1E]/35 backdrop-blur-xs flex items-end sm:items-center justify-center sm:p-4"
         >
-          <div className="w-full max-w-md bg-[#FAF9F7] border border-[#EAE8E5] rounded-lg p-5 sm:p-6 space-y-4">
-            <div className="flex items-start justify-between gap-4 pb-3 border-b border-[#EAE8E5]">
+          <div className="w-full sm:max-w-md bg-[#FCF6F6] border-t sm:border border-[#EFE2E2] rounded-t-3xl sm:rounded-2xl p-5 sm:p-6 space-y-4">
+            <div className="w-10 h-1.5 bg-[#DFC8C8] rounded-full mx-auto -mt-1 sm:hidden" />
+
+            <div className="flex items-start justify-between gap-4 pb-3 border-b border-[#EFE2E2]">
               <div>
-                <p className="text-[12px] text-[#858585]">
+                <p className="text-[12px] font-medium text-[#A64258]">
                   {requestModalMentor.role} · {requestModalMentor.officeHours}
                 </p>
                 <h2
                   id="mentor-request-title"
-                  className="mt-0.5 text-[16px] font-semibold text-[#222222]"
+                  className="mt-0.5 text-[16.5px] font-semibold text-[#221D1E]"
                 >
                   Request help from {requestModalMentor.name}
                 </h2>
@@ -416,7 +418,7 @@ export default function App() {
                 type="button"
                 onClick={() => setRequestModalMentor(null)}
                 aria-label="Close modal"
-                className="text-[#858585] hover:text-[#222222] p-1"
+                className="min-w-[36px] min-h-[36px] flex items-center justify-center rounded-full bg-[#F4E3E3] text-[#7B6F71] hover:text-[#221D1E]"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -426,7 +428,7 @@ export default function App() {
               <div>
                 <label
                   htmlFor="mentor-req-topic"
-                  className="block text-[12.5px] text-[#858585] mb-1"
+                  className="block text-[12.5px] font-medium text-[#7B6F71] mb-1"
                 >
                   Topic or doubt summary
                 </label>
@@ -437,14 +439,14 @@ export default function App() {
                   value={requestTopic}
                   onChange={(e) => setRequestTopic(e.target.value)}
                   placeholder="e.g., Squeeze Theorem proof or pointer reversal"
-                  className="w-full px-3 py-2 bg-[#FFFFFF] border border-[#EAE8E5] rounded-md text-[14px] text-[#222222] placeholder:text-[#858585] focus:outline-none focus:border-[#A99AE8]"
+                  className="w-full min-h-[42px] px-3.5 py-2 bg-[#FFFFFF] border border-[#EFE2E2] rounded-xl text-[14px] text-[#221D1E] placeholder:text-[#7B6F71] focus:outline-none focus:border-[#C45B72]"
                 />
               </div>
 
               <div>
                 <label
                   htmlFor="mentor-req-note"
-                  className="block text-[12.5px] text-[#858585] mb-1"
+                  className="block text-[12.5px] font-medium text-[#7B6F71] mb-1"
                 >
                   Where you are stuck (optional)
                 </label>
@@ -454,7 +456,7 @@ export default function App() {
                   value={requestNote}
                   onChange={(e) => setRequestNote(e.target.value)}
                   placeholder="Briefly describe what you already tried..."
-                  className="w-full px-3 py-2 bg-[#FFFFFF] border border-[#EAE8E5] rounded-md text-[14px] text-[#222222] placeholder:text-[#858585] focus:outline-none focus:border-[#A99AE8]"
+                  className="w-full px-3.5 py-2.5 bg-[#FFFFFF] border border-[#EFE2E2] rounded-xl text-[14px] text-[#221D1E] placeholder:text-[#7B6F71] focus:outline-none focus:border-[#C45B72]"
                 />
               </div>
 
@@ -462,13 +464,13 @@ export default function App() {
                 <button
                   type="button"
                   onClick={() => setRequestModalMentor(null)}
-                  className="px-4 py-2 rounded-md border border-[#EAE8E5] bg-[#FFFFFF] text-[13px] text-[#222222] hover:bg-[#FAF9F7]"
+                  className="min-h-[42px] px-4 py-2 rounded-xl border border-[#EFE2E2] bg-[#FFFFFF] text-[13.5px] font-medium text-[#221D1E] hover:bg-[#FCF6F6]"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 rounded-md bg-[#222222] text-[#FAF9F7] text-[13px] font-medium hover:bg-[#363636]"
+                  className="min-h-[42px] px-5 py-2 rounded-xl bg-[#C45B72] text-[#FFFFFF] text-[13.5px] font-semibold hover:bg-[#A64258]"
                 >
                   Send request
                 </button>
