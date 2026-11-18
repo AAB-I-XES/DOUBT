@@ -62,7 +62,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
             className="min-h-[36px] inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FCEBE8]/90 text-[12.5px] font-semibold text-[#141212]"
           >
             <User className="w-3.5 h-3.5" strokeWidth={2} />
-            <span>Alex</span>
+            <span>Shristii</span>
           </button>
         </div>
 
@@ -119,7 +119,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
               <h1 className="mt-1 text-[28px] sm:text-[34px] font-bold tracking-[-0.03em] text-[#141212] leading-[1.08]">
                 Good morning,
                 <br />
-                Alex.
+                Shristii.
               </h1>
             </div>
 

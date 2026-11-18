@@ -278,7 +278,7 @@ export const CommunityView: React.FC<CommunityViewProps> = ({
                   className="bg-[#FFF9F8] rounded-[22px] p-4 space-y-3"
                 >
                   <label htmlFor="community-reply" className="block text-[12.5px] font-semibold text-[#6E5B59]">
-                    Write a response as Alex Rivera
+                    Write a response as Shristii
                   </label>
                   <textarea
                     id="community-reply"
