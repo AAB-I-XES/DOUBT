@@ -19,6 +19,15 @@ const ai = new GoogleGenAI({
   },
 });
 
+const APPROVED_MATERIALS_CATALOG = [
+  'Limits, Continuity & Epsilon-Delta Proofs (MA101 · Abhishek Sharma)',
+  'Pointers, Dynamic Memory & Linked Lists in C (CS101 · Munsifa Khan)',
+  'Eigenvalues, Diagonalization & Spectral Theorem (MA104 · Abhishek Sharma)',
+  'Simple, Damped & Forced Harmonic Oscillations (PH103 · Dr. Paragjyoti)',
+  'Boolean Algebra & Karnaugh Map Practice Set (EC102 · Rohan Sen)',
+  'Integration by Parts & Trigonometric Substitutions (MA101 · Abhishek Sharma)',
+];
+
 interface HistoryTurn {
   role: 'student' | 'assistant';
   text: string;
@@ -33,6 +42,7 @@ interface AttachmentPayload {
 interface ResolveRequestBody {
   question?: string;
   subject?: string;
+  hintFirst?: boolean;
   history?: HistoryTurn[];
   attachment?: AttachmentPayload | null;
 }
@@ -43,7 +53,7 @@ const RESPONSE_SCHEMA = {
     subject: {
       type: Type.STRING,
       description:
-        'Detected or matching first-year subject (e.g., Calculus, Data Structures, Physics, Linear Algebra, Digital Logic, General).',
+        'Classified first-year subject (Calculus, Data Structures, Physics, Linear Algebra, Digital Logic, or General).',
     },
     conceptSummary: {
       type: Type.STRING,
@@ -52,13 +62,13 @@ const RESPONSE_SCHEMA = {
     },
     steps: {
       type: Type.ARRAY,
-      description: 'Ordered step-by-step pedagogical walkthrough of the solution or concept.',
+      description: 'Ordered step-by-step pedagogical walkthrough of the solution or guided hints.',
       items: {
         type: Type.OBJECT,
         properties: {
           heading: {
             type: Type.STRING,
-            description: 'Short, clear step title (e.g., "Apply the chain rule to the outer function").',
+            description: 'Short, clear step title.',
           },
           explanation: {
             type: Type.STRING,
@@ -68,7 +78,7 @@ const RESPONSE_SCHEMA = {
           math: {
             type: Type.STRING,
             description:
-              'Optional standalone LaTeX equation (without $$ delimiters) or short code block if helpful for this step.',
+              'Optional standalone LaTeX equation (without $$ delimiters) if helpful for this step.',
           },
         },
         required: ['heading', 'explanation'],
@@ -79,6 +89,29 @@ const RESPONSE_SCHEMA = {
       description:
         'One concrete mistake first-year students commonly make on this topic and how to avoid it.',
     },
+    citedSources: {
+      type: Type.ARRAY,
+      description:
+        '1 to 2 matching titles from the Approved Course Materials catalog that support this explanation.',
+      items: {
+        type: Type.STRING,
+      },
+    },
+    practiceQuestion: {
+      type: Type.OBJECT,
+      description: 'One short follow-up practice problem so the student can test understanding.',
+      properties: {
+        prompt: {
+          type: Type.STRING,
+          description: 'Short practice problem statement using $...$ for math if needed.',
+        },
+        hint: {
+          type: Type.STRING,
+          description: 'Helpful 1-sentence hint for solving the practice problem.',
+        },
+      },
+      required: ['prompt', 'hint'],
+    },
     followUpPrompts: {
       type: Type.ARRAY,
       description: 'Three natural, concise follow-up questions the student might ask next.',
@@ -87,7 +120,15 @@ const RESPONSE_SCHEMA = {
       },
     },
   },
-  required: ['subject', 'conceptSummary', 'steps', 'commonPitfall', 'followUpPrompts'],
+  required: [
+    'subject',
+    'conceptSummary',
+    'steps',
+    'commonPitfall',
+    'citedSources',
+    'practiceQuestion',
+    'followUpPrompts',
+  ],
 };
 
 async function startServer() {
@@ -95,7 +136,7 @@ async function startServer() {
   app.use(express.json({ limit: '15mb' }));
 
   app.get('/api/health', (_req, res) => {
-    res.json({ ok: true });
+    res.json({ ok: true, app: 'DoubtBridge' });
   });
 
   app.post('/api/ai/resolve', async (req, res) => {
@@ -111,6 +152,7 @@ async function startServer() {
       const body = req.body as ResolveRequestBody;
       const question = (body.question || '').trim();
       const subject = (body.subject || 'General').trim();
+      const hintFirst = Boolean(body.hintFirst);
       const history = Array.isArray(body.history) ? body.history : [];
       const attachment = body.attachment || null;
 
@@ -127,8 +169,18 @@ async function startServer() {
               .join('\n')}`
           : '';
 
-      const promptText = `Subject context: ${subject}\nStudent question: ${
-        question || 'Please examine the attached document or image and explain how to solve it step by step.'
+      const pedagogicalMode = hintFirst
+        ? 'HINT-FIRST MODE ENABLED: Guide the student with Socratic hints and intermediate milestones rather than giving away the final numeric/code answer immediately, so they can solve the last step themselves.'
+        : 'STANDARD STEP-BY-STEP MODE: Provide a clear, rigorous step-by-step explanation grounded in the syllabus.';
+
+      const promptText = `Subject context: ${subject}
+Mode: ${pedagogicalMode}
+Approved Course Materials Catalog (cite the closest 1-2 matches in citedSources):
+- ${APPROVED_MATERIALS_CATALOG.join('\n- ')}
+
+Student question: ${
+        question ||
+        'Please examine the attached document or image and explain how to solve it step by step.'
       }${historyContext}`;
 
       const parts: Array<{ text: string } | { inlineData: { mimeType: string; data: string } }> = [];
@@ -149,7 +201,7 @@ async function startServer() {
         contents: { parts },
         config: {
           systemInstruction:
-            'You are DOUBTLY, a calm, authoritative, and patient university teaching assistant helping first-year undergraduate students. Explain concepts clearly without condescension or filler praise. Format mathematical expressions accurately using standard LaTeX ($...$ for inline math inside text fields, and pure LaTeX without $$ delimiters inside the optional `math` field). Keep explanations crisp, rigorous, and easy to follow.',
+            'You are DoubtBridge AI, a calm, authoritative university teaching assistant for first-year students at Assam Skill University. Classify the topic, retrieve and cite matching approved course materials from the provided catalog, explain concepts clearly with standard LaTeX ($...$ for inline math, pure LaTeX without $$ inside the `math` field), include a short practice question, and avoid fabricated facts.',
           thinkingConfig: { thinkingLevel: ThinkingLevel.LOW },
           responseMimeType: 'application/json',
           responseSchema: RESPONSE_SCHEMA,
@@ -191,7 +243,7 @@ async function startServer() {
   }
 
   app.listen(PORT, '0.0.0.0', () => {
-    console.log(`DOUBTLY server running on http://localhost:${PORT}`);
+    console.log(`DoubtBridge server running on http://localhost:${PORT}`);
   });
 }
 

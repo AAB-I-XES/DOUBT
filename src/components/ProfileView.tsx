@@ -55,7 +55,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
           <div>
             <p className="text-[12.5px] font-semibold text-[#141212]/70">
-              {profile.semester} · ID {profile.rollNumber}
+              {profile.university} · {profile.semester} · {profile.rollNumber}
             </p>
             <h1 className="mt-1 text-[28px] sm:text-[34px] font-bold tracking-[-0.03em] text-[#141212] leading-tight">
               {profile.name}
@@ -255,7 +255,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
             )}
           </section>
 
-          {/* Enrolled Courses List (Zero DP, Clean Chips) */}
+          {/* Enrolled Courses List */}
           <section className="space-y-3">
             <h2 className="text-[15px] font-bold text-[#141212] px-1">
               Enrolled first-year courses

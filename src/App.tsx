@@ -64,7 +64,8 @@ export default function App() {
   const handleResolveWithAI = async (
     questionText: string,
     subject: SubjectName,
-    attachment?: AttachmentPreview | null
+    attachment?: AttachmentPreview | null,
+    hintFirst = false
   ) => {
     setActiveTab('ask');
     setIsAiLoading(true);
@@ -82,6 +83,7 @@ export default function App() {
         body: JSON.stringify({
           question: questionText,
           subject,
+          hintFirst,
           history,
           attachment: attachment
             ? {
@@ -109,6 +111,7 @@ export default function App() {
         subject,
         createdAt: 'Just now',
         attachmentName: attachment?.name,
+        hintFirst,
         answer,
         helpfulVote: null,
       };
@@ -142,7 +145,7 @@ export default function App() {
   };
 
   const handleQuickQuestionFromOverview = (question: string, subject: SubjectName) => {
-    void handleResolveWithAI(question, subject, null);
+    void handleResolveWithAI(question, subject, null, false);
   };
 
   const handleOpenRecentDoubt = (item: RecentDoubtSummary) => {
@@ -171,6 +174,14 @@ export default function App() {
         ex.id === exchangeId
           ? { ...ex, helpfulVote: ex.helpfulVote === 'up' ? null : 'up' }
           : ex
+      )
+    );
+  };
+
+  const handleReportAnswer = (exchangeId: string, reason: string) => {
+    setExchanges((prev) =>
+      prev.map((ex) =>
+        ex.id === exchangeId ? { ...ex, reportedReason: reason } : ex
       )
     );
   };
@@ -254,7 +265,13 @@ export default function App() {
 
   const handleEscalateExchangeToMentor = (exchange: DoubtExchange) => {
     const matchingMentor =
-      mentors.find((m) => m.isAvailableNow) || mentors[0];
+      mentors.find((m) =>
+        m.expertise.some((exp) =>
+          exp.toLowerCase().includes((exchange.answer.subject || exchange.subject).toLowerCase())
+        )
+      ) ||
+      mentors.find((m) => m.isAvailableNow) ||
+      mentors[0];
     openMentorRequestModal(
       matchingMentor,
       exchange.question.replace(/\$/g, '').slice(0, 90),
@@ -337,7 +354,9 @@ export default function App() {
             onSubmitQuestion={handleResolveWithAI}
             onToggleSave={handleToggleSaveExchange}
             onVoteHelpful={handleVoteHelpful}
+            onReportAnswer={handleReportAnswer}
             onEscalateToMentor={handleEscalateExchangeToMentor}
+            onOpenResources={() => setActiveTab('resources')}
             onDismissError={() => setAiError(null)}
           />
         )}
@@ -345,6 +364,7 @@ export default function App() {
         {activeTab === 'community' && (
           <CommunityView
             questions={communityQuestions}
+            exchanges={exchanges}
             selectedQuestionId={selectedCommunityId}
             onSelectQuestion={setSelectedCommunityId}
             onToggleUpvote={handleToggleCommunityUpvote}

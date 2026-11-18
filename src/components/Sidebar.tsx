@@ -45,11 +45,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
             onClick={() => onNavigate('overview')}
             className="w-full flex items-center gap-2.5 px-3 py-2 text-left rounded-full hover:bg-[#F6D5D0]/60 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#141212]"
           >
-            <span className="w-7 h-7 rounded-full bg-[#FBBFB5] flex items-center justify-center text-[13px] font-bold text-[#141212]">
-              D
+            <span className="w-7 h-7 rounded-full bg-[#FBBFB5] flex items-center justify-center text-[11.5px] font-bold text-[#141212]">
+              DB
             </span>
-            <span className="text-[14px] font-bold tracking-[0.14em] text-[#141212] whitespace-nowrap">
-              DOUBTLY
+            <span className="text-[14.5px] font-bold tracking-[0.04em] text-[#141212] whitespace-nowrap">
+              DoubtBridge
             </span>
           </button>
 
@@ -101,7 +101,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   activeTab === 'profile' ? 'text-[#FFFFFF]/75' : 'text-[#6E5B59]'
                 }`}
               >
-                1st Year · CS
+                {profile.rollNumber} · CSE (AI-ML)
               </p>
             </div>
             <User
@@ -114,7 +114,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </div>
       </aside>
 
-      {/* Mobile Floating Dark iOS Dock (Matching reference image bottom pill) */}
+      {/* Mobile Floating Dark iOS Dock */}
       <div className="md:hidden fixed bottom-3 inset-x-0 z-40 flex justify-center px-4 pointer-events-none pb-safe">
         <nav
           aria-label="Mobile navigation"
@@ -137,7 +137,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
               >
                 <Icon className="w-[18px] h-[18px] shrink-0" strokeWidth={2} />
                 {isActive && (
-                  <span className="whitespace-nowrap">{item.label === 'Ask Doubt' ? 'Ask' : item.label}</span>
+                  <span className="whitespace-nowrap">
+                    {item.label === 'Ask Doubt' ? 'Ask' : item.label}
+                  </span>
                 )}
               </button>
             );

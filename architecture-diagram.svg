@@ -1,141 +1,125 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 720" width="1120" height="720" font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif">
   <defs>
-    <marker id="arrow-slate" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-      <path d="M 0 1 L 10 5 L 0 9 z" fill="#475569" />
+    <marker id="arrow-ink" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#141212" />
     </marker>
-    <marker id="arrow-indigo" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-      <path d="M 0 1 L 10 5 L 0 9 z" fill="#4F46E5" />
-    </marker>
-    <marker id="arrow-emerald" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-      <path d="M 0 1 L 10 5 L 0 9 z" fill="#059669" />
-    </marker>
-    <marker id="arrow-amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-      <path d="M 0 1 L 10 5 L 0 9 z" fill="#D97706" />
+    <marker id="arrow-rose" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#6E5B59" />
     </marker>
     <filter id="card-shadow" x="-4%" y="-4%" width="108%" height="112%">
-      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#0F172A" flood-opacity="0.06" />
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#141212" flood-opacity="0.06" />
     </filter>
   </defs>
 
   <!-- Canvas Background -->
-  <rect width="1120" height="720" fill="#F8FAFC" rx="12" />
+  <rect width="1120" height="720" fill="#FCEBE8" rx="16" />
 
-  <!-- Title Header -->
-  <text x="40" y="44" font-size="22" font-weight="700" fill="#0F172A">ClarifyU — System Architecture Diagram</text>
-  <text x="40" y="68" font-size="13" fill="#475569">Intelligent Doubt-Clearing &amp; Peer-Learning Platform for First-Year Students (React + Express + Gemini AI)</text>
+  <!-- Top Coral-Peach Header Band -->
+  <rect width="1120" height="84" fill="#FBBFB5" rx="16" />
+  <rect y="68" width="1120" height="16" fill="#FBBFB5" />
+  <text x="40" y="38" font-size="22" font-weight="700" fill="#141212">DoubtBridge — System Architecture Diagram</text>
+  <text x="40" y="61" font-size="13" fill="#4A3B39">Assam Skill University · B.Tech CSE (AI &amp; ML) Group 5 · Submit → Classify → Retrieve → Explain → Escalate → Improve</text>
 
-  <!-- ==================== LAYER 1: USER PERSONAS ==================== -->
-  <rect x="40" y="92" width="1040" height="102" rx="10" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.5" stroke-dasharray="6 4" />
-  <text x="58" y="114" font-size="11" font-weight="700" letter-spacing="0.08em" fill="#64748B">USERS &amp; ROLES</text>
+  <!-- ==================== LAYER 1: USERS & FACULTY ==================== -->
+  <rect x="40" y="102" width="1040" height="98" rx="14" fill="#FFF9F8" stroke="#E5C8C3" stroke-width="1.5" />
+  <text x="58" y="124" font-size="11" font-weight="700" letter-spacing="0.08em" fill="#6E5B59">1. USERS &amp; MENTORS (ASSAM SKILL UNIVERSITY)</text>
 
-  <!-- Student Persona -->
-  <rect x="64" y="126" width="290" height="54" rx="8" fill="#EEF2FF" stroke="#818CF8" stroke-width="1.5" filter="url(#card-shadow)" />
-  <text x="209" y="149" text-anchor="middle" font-size="14" font-weight="700" fill="#1E1B4B">First-Year Students</text>
-  <text x="209" y="168" text-anchor="middle" font-size="11.5" fill="#4338CA">Ask Doubts (Named or Anonymous) &amp; Upvote</text>
+  <rect x="64" y="136" width="305" height="50" rx="10" fill="#F6D5D0" />
+  <text x="216" y="157" text-anchor="middle" font-size="13.5" font-weight="700" fill="#141212">First-Year Students (Group 5)</text>
+  <text x="216" y="174" text-anchor="middle" font-size="11" fill="#4A3B39">Shristii, Aichajya, S Sushmi · Type / Snap / Speak</text>
 
-  <!-- Senior Mentor Persona -->
-  <rect x="415" y="126" width="290" height="54" rx="8" fill="#ECFDF5" stroke="#34D399" stroke-width="1.5" filter="url(#card-shadow)" />
-  <text x="560" y="149" text-anchor="middle" font-size="14" font-weight="700" fill="#064E3B">Senior Peer Mentors</text>
-  <text x="560" y="168" text-anchor="middle" font-size="11.5" fill="#047857">Resolve Escalated Doubts &amp; Share Tips</text>
+  <rect x="407" y="136" width="305" height="50" rx="10" fill="#F6D5D0" />
+  <text x="559" y="157" text-anchor="middle" font-size="13.5" font-weight="700" fill="#141212">Subject Faculty</text>
+  <text x="559" y="174" text-anchor="middle" font-size="11" fill="#4A3B39">Abhishek Sharma · Dr. Paragjyoti · Munsifa Khan</text>
 
-  <!-- Faculty Persona -->
-  <rect x="766" y="126" width="290" height="54" rx="8" fill="#FFFBEB" stroke="#FBBF24" stroke-width="1.5" filter="url(#card-shadow)" />
-  <text x="911" y="149" text-anchor="middle" font-size="14" font-weight="700" fill="#78350F">Faculty &amp; Teaching Assistants</text>
-  <text x="911" y="168" text-anchor="middle" font-size="11.5" fill="#B45309">Verify Answers &amp; View Topic Confusion Trends</text>
+  <rect x="750" y="136" width="306" height="50" rx="10" fill="#F6D5D0" />
+  <text x="903" y="157" text-anchor="middle" font-size="13.5" font-weight="700" fill="#141212">Senior Peer Mentors</text>
+  <text x="903" y="174" text-anchor="middle" font-size="11" fill="#4A3B39">Rohan Sen · Escalation Queue &amp; Reviews</text>
 
-  <!-- ==================== LAYER 2: REACT FRONTEND ==================== -->
-  <rect x="40" y="230" width="1040" height="128" rx="10" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.5" filter="url(#card-shadow)" />
-  <text x="58" y="253" font-size="11" font-weight="700" letter-spacing="0.08em" fill="#4F46E5">CLIENT LAYER — REACT 19 + VITE 8 + TAILWIND CSS V4 (SPA)</text>
+  <!-- ==================== LAYER 2: CLIENT SPA ==================== -->
+  <rect x="40" y="228" width="1040" height="132" rx="14" fill="#FFF9F8" stroke="#E5C8C3" stroke-width="1.5" filter="url(#card-shadow)" />
+  <text x="58" y="250" font-size="11" font-weight="700" letter-spacing="0.08em" fill="#141212">2. CLIENT LAYER — REACT 19 + VITE 8 + TAILWIND V4 + KATEX</text>
 
-  <!-- Module 1 -->
-  <rect x="64" y="268" width="230" height="72" rx="8" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.5" />
-  <text x="179" y="292" text-anchor="middle" font-size="13" font-weight="700" fill="#0F172A">Doubt Composer &amp; AI Chat</text>
-  <text x="179" y="311" text-anchor="middle" font-size="11" fill="#475569">Text, Code, Math, Course Tags</text>
-  <text x="179" y="327" text-anchor="middle" font-size="11" fill="#475569">Anonymous Mode Toggle</text>
+  <rect x="64" y="266" width="230" height="78" rx="10" fill="#FCEBE8" stroke="#E5C8C3" stroke-width="1.2" />
+  <text x="179" y="290" text-anchor="middle" font-size="13" font-weight="700" fill="#141212">Submit &amp; Ask Doubt</text>
+  <text x="179" y="309" text-anchor="middle" font-size="11" fill="#4A3B39">Type, Image/PDF, Voice (Mic)</text>
+  <text x="179" y="325" text-anchor="middle" font-size="11" fill="#4A3B39">Hint-First Toggle &amp; Practice Check</text>
 
-  <!-- Module 2 -->
-  <rect x="318" y="268" width="230" height="72" rx="8" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.5" />
-  <text x="433" y="292" text-anchor="middle" font-size="13" font-weight="700" fill="#0F172A">Peer Q&amp;A Knowledge Feed</text>
-  <text x="433" y="311" text-anchor="middle" font-size="11" fill="#475569">Searchable Resolved Threads</text>
-  <text x="433" y="327" text-anchor="middle" font-size="11" fill="#475569">"I Have This Doubt Too" Upvotes</text>
+  <rect x="318" y="266" width="230" height="78" rx="10" fill="#FCEBE8" stroke="#E5C8C3" stroke-width="1.2" />
+  <text x="433" y="290" text-anchor="middle" font-size="13" font-weight="700" fill="#141212">Community &amp; Insights</text>
+  <text x="433" y="309" text-anchor="middle" font-size="11" fill="#4A3B39">Peer Discussions &amp; Upvotes</text>
+  <text x="433" y="325" text-anchor="middle" font-size="11" fill="#4A3B39">Topic Insights &amp; Flagged Queue</text>
 
-  <!-- Module 3 -->
-  <rect x="572" y="268" width="230" height="72" rx="8" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.5" />
-  <text x="687" y="292" text-anchor="middle" font-size="13" font-weight="700" fill="#0F172A">Mentor &amp; Faculty Workspace</text>
-  <text x="687" y="311" text-anchor="middle" font-size="11" fill="#475569">Escalated Doubt Queue</text>
-  <text x="687" y="327" text-anchor="middle" font-size="11" fill="#475569">Verify Badges &amp; Topic Heatmap</text>
+  <rect x="572" y="266" width="230" height="78" rx="10" fill="#FCEBE8" stroke="#E5C8C3" stroke-width="1.2" />
+  <text x="687" y="290" text-anchor="middle" font-size="13" font-weight="700" fill="#141212">Mentors &amp; Escalation</text>
+  <text x="687" y="309" text-anchor="middle" font-size="11" fill="#4A3B39">Subject-Matched Routing</text>
+  <text x="687" y="325" text-anchor="middle" font-size="11" fill="#4A3B39">AI Context Hand-off &amp; Report Error</text>
 
-  <!-- Module 4 -->
-  <rect x="826" y="268" width="230" height="72" rx="8" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.5" />
-  <text x="941" y="292" text-anchor="middle" font-size="13" font-weight="700" fill="#0F172A">Curated Resources Hub</text>
-  <text x="941" y="311" text-anchor="middle" font-size="11" fill="#475569">Syllabus Notes &amp; Cheat Sheets</text>
-  <text x="941" y="327" text-anchor="middle" font-size="11" fill="#475569">Video Walkthroughs &amp; Practice</text>
+  <rect x="826" y="266" width="230" height="78" rx="10" fill="#FCEBE8" stroke="#E5C8C3" stroke-width="1.2" />
+  <text x="941" y="290" text-anchor="middle" font-size="13" font-weight="700" fill="#141212">Approved Resources</text>
+  <text x="941" y="309" text-anchor="middle" font-size="11" fill="#4A3B39">Cited Course Notes &amp; Manuals</text>
+  <text x="941" y="325" text-anchor="middle" font-size="11" fill="#4A3B39">Bookmarks &amp; Profile Tracking</text>
 
-  <!-- ==================== LAYER 3: EXPRESS BACKEND + GEMINI AI ==================== -->
-  <!-- Express Backend Box -->
-  <rect x="40" y="398" width="630" height="132" rx="10" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.5" filter="url(#card-shadow)" />
-  <text x="58" y="421" font-size="11" font-weight="700" letter-spacing="0.08em" fill="#0F172A">API &amp; ORCHESTRATION LAYER — EXPRESS.JS SERVER (PORT 3000 / server.ts)</text>
+  <!-- ==================== LAYER 3: EXPRESS + GEMINI WORKFLOW ==================== -->
+  <rect x="40" y="392" width="630" height="140" rx="14" fill="#FFF9F8" stroke="#E5C8C3" stroke-width="1.5" filter="url(#card-shadow)" />
+  <text x="58" y="414" font-size="11" font-weight="700" letter-spacing="0.08em" fill="#141212">3. SERVER PIPELINE — EXPRESS.JS (PORT 3000 / server.ts)</text>
 
-  <rect x="64" y="436" width="182" height="76" rx="8" fill="#F1F5F9" stroke="#CBD5E1" stroke-width="1.5" />
-  <text x="155" y="460" text-anchor="middle" font-size="12.5" font-weight="700" fill="#0F172A">REST API Gateway</text>
-  <text x="155" y="479" text-anchor="middle" font-size="11" fill="#475569">/api/doubts, /api/ai/resolve</text>
-  <text x="155" y="495" text-anchor="middle" font-size="11" fill="#475569">/api/resources, /api/analytics</text>
+  <rect x="64" y="430" width="182" height="84" rx="10" fill="#F6D5D0" />
+  <text x="155" y="454" text-anchor="middle" font-size="12.5" font-weight="700" fill="#141212">Classify Doubt</text>
+  <text x="155" y="473" text-anchor="middle" font-size="11" fill="#4A3B39">POST /api/ask-doubt</text>
+  <text x="155" y="489" text-anchor="middle" font-size="11" fill="#4A3B39">Calculus / Physics / C</text>
 
-  <rect x="264" y="436" width="182" height="76" rx="8" fill="#F1F5F9" stroke="#CBD5E1" stroke-width="1.5" />
-  <text x="355" y="460" text-anchor="middle" font-size="12.5" font-weight="700" fill="#0F172A">Anonymity &amp; Tag Guard</text>
-  <text x="355" y="479" text-anchor="middle" font-size="11" fill="#475569">Masks Student Identity</text>
-  <text x="355" y="495" text-anchor="middle" font-size="11" fill="#475569">Course &amp; Topic Normalization</text>
+  <rect x="264" y="430" width="182" height="84" rx="10" fill="#F6D5D0" />
+  <text x="355" y="454" text-anchor="middle" font-size="12.5" font-weight="700" fill="#141212">Retrieve Sources</text>
+  <text x="355" y="473" text-anchor="middle" font-size="11" fill="#4A3B39">Approved Notes Match</text>
+  <text x="355" y="489" text-anchor="middle" font-size="11" fill="#4A3B39">Citations &amp; Lab Guides</text>
 
-  <rect x="464" y="436" width="182" height="76" rx="8" fill="#F1F5F9" stroke="#CBD5E1" stroke-width="1.5" />
-  <text x="555" y="460" text-anchor="middle" font-size="12.5" font-weight="700" fill="#0F172A">Escalation Router</text>
-  <text x="555" y="479" text-anchor="middle" font-size="11" fill="#475569">AI Confidence Check</text>
-  <text x="555" y="495" text-anchor="middle" font-size="11" fill="#475569">Routes to Senior / Faculty</text>
+  <rect x="464" y="430" width="182" height="84" rx="10" fill="#F6D5D0" />
+  <text x="555" y="454" text-anchor="middle" font-size="12.5" font-weight="700" fill="#141212">Pedagogy &amp; Improve</text>
+  <text x="555" y="473" text-anchor="middle" font-size="11" fill="#4A3B39">Hint-First Flagging</text>
+  <text x="555" y="489" text-anchor="middle" font-size="11" fill="#4A3B39">Moderation &amp; Insights</text>
 
-  <!-- Gemini AI Box -->
-  <rect x="706" y="398" width="374" height="132" rx="10" fill="#EEF2FF" stroke="#6366F1" stroke-width="1.8" filter="url(#card-shadow)" />
-  <text x="724" y="421" font-size="11" font-weight="700" letter-spacing="0.08em" fill="#4338CA">AI ENGINE — GOOGLE GEMINI (@google/genai)</text>
+  <!-- Gemini Box -->
+  <rect x="706" y="392" width="374" height="140" rx="14" fill="#141212" filter="url(#card-shadow)" />
+  <text x="724" y="414" font-size="11" font-weight="700" letter-spacing="0.08em" fill="#FBBFB5">4. AI ENGINE — GEMINI (@google/genai)</text>
 
-  <rect x="724" y="436" width="162" height="76" rx="8" fill="#FFFFFF" stroke="#A5B4FC" stroke-width="1.5" />
-  <text x="805" y="460" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1E1B4B">Socratic AI Tutor</text>
-  <text x="805" y="479" text-anchor="middle" font-size="11" fill="#4338CA">Step-by-Step Hints</text>
-  <text x="805" y="495" text-anchor="middle" font-size="11" fill="#4338CA">Code &amp; Math Breakdown</text>
+  <rect x="724" y="430" width="162" height="84" rx="10" fill="#252020" />
+  <text x="805" y="454" text-anchor="middle" font-size="12.5" font-weight="700" fill="#FFF9F8">Explain &amp; Coach</text>
+  <text x="805" y="473" text-anchor="middle" font-size="11" fill="#F6D5D0">Step-by-Step + Math</text>
+  <text x="805" y="489" text-anchor="middle" font-size="11" fill="#F6D5D0">Hint-First Socratic Mode</text>
 
-  <rect x="900" y="436" width="162" height="76" rx="8" fill="#FFFFFF" stroke="#A5B4FC" stroke-width="1.5" />
-  <text x="981" y="460" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1E1B4B">Smart Matcher</text>
-  <text x="981" y="479" text-anchor="middle" font-size="11" fill="#4338CA">Duplicate Q&amp;A Lookup</text>
-  <text x="981" y="495" text-anchor="middle" font-size="11" fill="#4338CA">Resource Suggestions</text>
+  <rect x="900" y="430" width="162" height="84" rx="10" fill="#252020" />
+  <text x="981" y="454" text-anchor="middle" font-size="12.5" font-weight="700" fill="#FFF9F8">Verify &amp; Practice</text>
+  <text x="981" y="473" text-anchor="middle" font-size="11" fill="#F6D5D0">Cited Source Refs</text>
+  <text x="981" y="489" text-anchor="middle" font-size="11" fill="#F6D5D0">Practice Check + Hint</text>
 
-  <!-- ==================== LAYER 4: DATA & CONTENT LAYER ==================== -->
-  <rect x="40" y="568" width="1040" height="114" rx="10" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.5" filter="url(#card-shadow)" />
-  <text x="58" y="591" font-size="11" font-weight="700" letter-spacing="0.08em" fill="#0F172A">DATA &amp; KNOWLEDGE LAYER</text>
+  <!-- ==================== LAYER 4: DATA & CATALOG ==================== -->
+  <rect x="40" y="564" width="1040" height="116" rx="14" fill="#FFF9F8" stroke="#E5C8C3" stroke-width="1.5" />
+  <text x="58" y="586" font-size="11" font-weight="700" letter-spacing="0.08em" fill="#6E5B59">5. COURSE KNOWLEDGE, MODERATION &amp; INSIGHTS</text>
 
-  <rect x="64" y="604" width="305" height="60" rx="8" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.5" />
-  <text x="216" y="628" text-anchor="middle" font-size="13" font-weight="700" fill="#0F172A">Doubts, Replies &amp; Upvotes Store</text>
-  <text x="216" y="647" text-anchor="middle" font-size="11" fill="#475569">Status Lifecycle, Threads &amp; Verified Solutions</text>
+  <rect x="64" y="600" width="305" height="62" rx="10" fill="#FCEBE8" />
+  <text x="216" y="625" text-anchor="middle" font-size="13" font-weight="700" fill="#141212">Approved Study Materials Catalog</text>
+  <text x="216" y="644" text-anchor="middle" font-size="11" fill="#4A3B39">Calculus, Physics &amp; C Programming Syllabi</text>
 
-  <rect x="407" y="604" width="305" height="60" rx="8" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.5" />
-  <text x="559" y="628" text-anchor="middle" font-size="13" font-weight="700" fill="#0F172A">User Profiles &amp; Mentor Routing</text>
-  <text x="559" y="647" text-anchor="middle" font-size="11" fill="#475569">Roles (Student / Senior / Faculty) &amp; Subject Expertise</text>
+  <rect x="407" y="600" width="305" height="62" rx="10" fill="#FCEBE8" />
+  <text x="559" y="625" text-anchor="middle" font-size="13" font-weight="700" fill="#141212">Exchanges &amp; Escalation Requests</text>
+  <text x="559" y="644" text-anchor="middle" font-size="11" fill="#4A3B39">Solved Threads, Saved Doubts &amp; Mentor Handoff</text>
 
-  <rect x="750" y="604" width="306" height="60" rx="8" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.5" />
-  <text x="903" y="628" text-anchor="middle" font-size="13" font-weight="700" fill="#0F172A">Curated Syllabus Resource Index</text>
-  <text x="903" y="647" text-anchor="middle" font-size="11" fill="#475569">Course Notes, Videos &amp; First-Year Topic Tags</text>
+  <rect x="750" y="600" width="306" height="62" rx="10" fill="#FCEBE8" />
+  <text x="903" y="625" text-anchor="middle" font-size="13" font-weight="700" fill="#141212">Topic Insights &amp; Flagged Reports</text>
+  <text x="903" y="644" text-anchor="middle" font-size="11" fill="#4A3B39">Subject Confusion Trends &amp; Faculty Moderation</text>
 
   <!-- ==================== FLOW ARROWS ==================== -->
-  <!-- Users -> React SPA -->
-  <line x1="209" y1="180" x2="209" y2="226" stroke="#4F46E5" stroke-width="2" marker-end="url(#arrow-indigo)" />
-  <line x1="560" y1="180" x2="560" y2="226" stroke="#059669" stroke-width="2" marker-end="url(#arrow-emerald)" />
-  <line x1="911" y1="180" x2="911" y2="226" stroke="#D97706" stroke-width="2" marker-end="url(#arrow-amber)" />
+  <line x1="216" y1="186" x2="216" y2="224" stroke="#141212" stroke-width="2" marker-end="url(#arrow-ink)" />
+  <line x1="559" y1="186" x2="559" y2="224" stroke="#6E5B59" stroke-width="2" marker-end="url(#arrow-rose)" />
+  <line x1="903" y1="186" x2="903" y2="224" stroke="#6E5B59" stroke-width="2" marker-end="url(#arrow-rose)" />
 
-  <!-- React SPA <-> Express API -->
-  <line x1="280" y1="358" x2="280" y2="394" stroke="#475569" stroke-width="2" marker-end="url(#arrow-slate)" marker-start="url(#arrow-slate)" />
-  <text x="290" y="382" font-size="10.5" font-weight="600" fill="#475569">HTTPS / JSON (/api/*)</text>
+  <line x1="280" y1="360" x2="280" y2="388" stroke="#141212" stroke-width="2" marker-end="url(#arrow-ink)" marker-start="url(#arrow-ink)" />
+  <text x="290" y="380" font-size="10.5" font-weight="600" fill="#4A3B39">HTTPS / JSON (/api/ask-doubt)</text>
 
-  <!-- Express <-> Gemini AI -->
-  <line x1="670" y1="464" x2="702" y2="464" stroke="#4F46E5" stroke-width="2.2" marker-end="url(#arrow-indigo)" marker-start="url(#arrow-indigo)" />
+  <line x1="670" y1="462" x2="702" y2="462" stroke="#141212" stroke-width="2.2" marker-end="url(#arrow-ink)" marker-start="url(#arrow-ink)" />
 
-  <!-- Express <-> Data Layer -->
-  <line x1="216" y1="530" x2="216" y2="564" stroke="#475569" stroke-width="2" marker-end="url(#arrow-slate)" marker-start="url(#arrow-slate)" />
-  <line x1="555" y1="530" x2="555" y2="564" stroke="#475569" stroke-width="2" marker-end="url(#arrow-slate)" marker-start="url(#arrow-slate)" />
-  <line x1="903" y1="530" x2="903" y2="564" stroke="#475569" stroke-width="2" marker-end="url(#arrow-slate)" marker-start="url(#arrow-slate)" />
+  <line x1="216" y1="532" x2="216" y2="560" stroke="#6E5B59" stroke-width="2" marker-end="url(#arrow-rose)" marker-start="url(#arrow-rose)" />
+  <line x1="555" y1="532" x2="555" y2="560" stroke="#6E5B59" stroke-width="2" marker-end="url(#arrow-rose)" marker-start="url(#arrow-rose)" />
+  <line x1="903" y1="532" x2="903" y2="560" stroke="#6E5B59" stroke-width="2" marker-end="url(#arrow-rose)" marker-start="url(#arrow-rose)" />
 </svg>

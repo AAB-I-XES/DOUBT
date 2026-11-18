@@ -1,14 +1,14 @@
-# DOUBTLY — Design System & Product Specification (`design.md`)
+# DoubtBridge — Design System & Product Specification (`design.md`)
 
-**DOUBTLY** is an intelligent doubt-clearing and peer-learning application for first-year students, designed as a native **iOS / iPadOS app** with a **Misty Rose, Coral Peach, and Pale Blush** two-tone curved sheet aesthetic, fully responsive across mobile and desktop.
+**DoubtBridge** is an intelligent doubt-clearing and peer-learning application for first-year students at **Assam Skill University**, designed as a native **iOS / iPadOS app** with a **Misty Rose, Coral Peach, and Pale Blush** two-tone curved sheet aesthetic, fully responsive across mobile and desktop.
 
 ---
 
 ## 1. Visual Architecture (Two-Tone Curved Sheet System)
 
-- **Top Header Band (`#FBBFB5`):** Warm coral-peach header holding the primary white pill search/question bar (`#FFFFFF`), page context, and compact action pills.
+- **Top Header Band (`#FBBFB5`):** Warm coral-peach header holding the primary white pill search/question bar (`#FFFFFF`, with voice dictation support), page context, and compact action pills.
 - **Curved Overlapping Sheet (`#FCEBE8`, `rounded-t-[32px]`):** Pale misty rose main sheet resting cleanly above the coral-peach band.
-- **Blush Content Tiles (`#F6D5D0` & `#FFF9F8`, `rounded-[22px]`):** Borderless tonal cards with generous padding (`16px`–`20px`) and crisp hierarchy.
+- **Blush Content Tiles (`#F6D5D0` & `#FFF9F8`, `rounded-[22px]`):** Borderless tonal cards with generous padding (`16px`–`20px`) and crisp hierarchy, hosting Hint-first mode toggles, Cited Approved Materials, Practice Checks, Error Reports, and Topic Insights.
 - **High-Contrast Controls (`#141212`):** Active filter pills use solid ink black with white text; inactive pills use subtle dark hairline outlines.
 - **No Profile Pictures / No Display Photos:** Profile, navigation, and mentor cards use clean typography and initials monograms—never user portrait photos.
 

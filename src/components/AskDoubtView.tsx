@@ -1,11 +1,15 @@
 import React, { useRef, useState } from 'react';
 import {
   ArrowRight,
+  BookOpen,
   Bookmark,
   Check,
   ChevronRight,
   Copy,
   FileText,
+  Flag,
+  Mic,
+  MicOff,
   Paperclip,
   ThumbsUp,
   UserPlus,
@@ -18,6 +22,7 @@ import {
 } from '../types/doubtly';
 import { SUBJECT_LIST } from '../data/academicData';
 import { MathBlock, MathText } from './MathText';
+import { useVoiceInput } from '../hooks/useVoiceInput';
 
 interface AskDoubtViewProps {
   exchanges: DoubtExchange[];
@@ -29,11 +34,14 @@ interface AskDoubtViewProps {
   onSubmitQuestion: (
     question: string,
     subject: SubjectName,
-    attachment?: AttachmentPreview | null
+    attachment?: AttachmentPreview | null,
+    hintFirst?: boolean
   ) => Promise<void>;
   onToggleSave: (exchangeId: string) => void;
   onVoteHelpful: (exchangeId: string) => void;
+  onReportAnswer: (exchangeId: string, reason: string) => void;
   onEscalateToMentor: (exchange: DoubtExchange) => void;
+  onOpenResources: () => void;
   onDismissError: () => void;
 }
 
@@ -41,6 +49,12 @@ const STARTER_QUESTIONS = [
   'Why does a recursive function overflow the stack without a base case?',
   'Derive the condition for critical damping in a second-order linear ODE.',
   'Explain why matrix multiplication is associative but not commutative.',
+];
+
+const REPORT_REASONS = [
+  'Inaccurate step or calculation',
+  'Off-syllabus explanation',
+  'Needs faculty verification',
 ];
 
 function formatFileSize(bytes: number): string {
@@ -59,14 +73,23 @@ export const AskDoubtView: React.FC<AskDoubtViewProps> = ({
   onSubmitQuestion,
   onToggleSave,
   onVoteHelpful,
+  onReportAnswer,
   onEscalateToMentor,
+  onOpenResources,
   onDismissError,
 }) => {
   const [question, setQuestion] = useState('');
   const [subject, setSubject] = useState<SubjectName>('Calculus');
+  const [hintFirst, setHintFirst] = useState(false);
   const [attachment, setAttachment] = useState<AttachmentPreview | null>(null);
   const [copiedId, setCopiedId] = useState<string | null>(null);
+  const [showPracticeHint, setShowPracticeHint] = useState(false);
+  const [reportOpenForId, setReportOpenForId] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const { isListening, voiceUnsupported, toggleListening } = useVoiceInput((text) => {
+    setQuestion((prev) => (prev ? `${prev} ${text}` : text));
+  });
 
   const activeExchange =
     exchanges.find((ex) => ex.id === activeExchangeId) || null;
@@ -99,7 +122,8 @@ export const AskDoubtView: React.FC<AskDoubtViewProps> = ({
     const fileToSend = attachment;
     setQuestion('');
     setAttachment(null);
-    await onSubmitQuestion(textToSend, subject, fileToSend);
+    setShowPracticeHint(false);
+    await onSubmitQuestion(textToSend, subject, fileToSend, hintFirst);
   };
 
   const handleCopy = async (exchange: DoubtExchange) => {
@@ -130,7 +154,7 @@ export const AskDoubtView: React.FC<AskDoubtViewProps> = ({
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
             <p className="text-[12px] font-semibold text-[#141212]/70">
-              AI Doubt Solver
+              DoubtBridge AI · Classify, Retrieve &amp; Explain
             </p>
             <h1 className="mt-0.5 text-[26px] sm:text-[32px] font-bold tracking-[-0.025em] text-[#141212] leading-tight">
               Ask Doubt
@@ -142,7 +166,11 @@ export const AskDoubtView: React.FC<AskDoubtViewProps> = ({
               <select
                 aria-label="Select previous doubt"
                 value={activeExchange?.id || ''}
-                onChange={(e) => onSelectExchange(e.target.value || null)}
+                onChange={(e) => {
+                  setShowPracticeHint(false);
+                  setReportOpenForId(null);
+                  onSelectExchange(e.target.value || null);
+                }}
                 className="min-h-[40px] max-w-[200px] sm:max-w-[240px] text-[13px] font-medium text-[#141212] bg-[#FFFFFF] rounded-full px-4 py-1.5 focus:outline-none truncate"
               >
                 <option value="">New question</option>
@@ -156,7 +184,11 @@ export const AskDoubtView: React.FC<AskDoubtViewProps> = ({
             {activeExchange && (
               <button
                 type="button"
-                onClick={() => onSelectExchange(null)}
+                onClick={() => {
+                  setShowPracticeHint(false);
+                  setReportOpenForId(null);
+                  onSelectExchange(null);
+                }}
                 className="min-h-[40px] px-4 py-1.5 rounded-full bg-[#141212] text-[13px] font-semibold text-[#FFFFFF] hover:bg-[#2B2626] active:scale-95 transition-all whitespace-nowrap shrink-0"
               >
                 New doubt
@@ -197,20 +229,43 @@ export const AskDoubtView: React.FC<AskDoubtViewProps> = ({
                 onSubmit={handleSubmit}
                 className="bg-[#FFF9F8] rounded-[26px] p-5 sm:p-6 shadow-[0_2px_12px_rgba(20,18,18,0.03)]"
               >
-                <label
-                  htmlFor="ask-ai-textarea"
-                  className="block text-[13px] font-semibold text-[#6E5B59] mb-2"
-                >
-                  Describe your question, paste code, or attach a problem sheet
-                </label>
+                <div className="flex items-center justify-between gap-2 mb-2">
+                  <label
+                    htmlFor="ask-ai-textarea"
+                    className="block text-[13px] font-semibold text-[#6E5B59]"
+                  >
+                    Type, speak, or snap a question
+                  </label>
+
+                  <label className="inline-flex items-center gap-2 text-[12.5px] font-semibold text-[#141212] cursor-pointer select-none">
+                    <input
+                      type="checkbox"
+                      checked={hintFirst}
+                      onChange={(e) => setHintFirst(e.target.checked)}
+                      className="w-3.5 h-3.5 accent-[#141212] rounded"
+                    />
+                    <span>Hint-first mode</span>
+                  </label>
+                </div>
+
                 <textarea
                   id="ask-ai-textarea"
                   rows={5}
                   value={question}
                   onChange={(e) => setQuestion(e.target.value)}
-                  placeholder="e.g., Why does L'Hôpital's rule apply to 0/0 limits, or attach a photo of a handwritten derivation..."
+                  placeholder={
+                    isListening
+                      ? 'Listening… speak your question clearly'
+                      : "e.g., Why does L'Hôpital's rule apply to 0/0 limits, or attach a photo of your notes..."
+                  }
                   className="w-full resize-y bg-transparent text-[15.5px] text-[#141212] placeholder:text-[#6E5B59]/75 focus:outline-none leading-relaxed"
                 />
+
+                {voiceUnsupported && (
+                  <p className="mt-1 text-[12px] font-medium text-[#6E5B59]">
+                    Voice dictation is unavailable in this browser—please type or attach a file.
+                  </p>
+                )}
 
                 {attachment && (
                   <div className="mt-3 flex items-center justify-between gap-3 px-4 py-2.5 rounded-2xl bg-[#FCEBE8] text-[13px]">
@@ -249,7 +304,24 @@ export const AskDoubtView: React.FC<AskDoubtViewProps> = ({
                       className="min-h-[40px] inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#FCEBE8] text-[13px] font-semibold text-[#141212] hover:bg-[#F6D5D0] transition-colors whitespace-nowrap shrink-0"
                     >
                       <Paperclip className="w-3.5 h-3.5" strokeWidth={2} />
-                      <span>Attach file</span>
+                      <span>Snap / PDF</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={toggleListening}
+                      className={`min-h-[40px] inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-[13px] font-semibold transition-colors whitespace-nowrap shrink-0 ${
+                        isListening
+                          ? 'bg-[#141212] text-[#FFFFFF]'
+                          : 'bg-[#FCEBE8] text-[#141212] hover:bg-[#F6D5D0]'
+                      }`}
+                    >
+                      {isListening ? (
+                        <MicOff className="w-3.5 h-3.5" strokeWidth={2} />
+                      ) : (
+                        <Mic className="w-3.5 h-3.5" strokeWidth={2} />
+                      )}
+                      <span>{isListening ? 'Listening…' : 'Speak'}</span>
                     </button>
 
                     <select
@@ -272,7 +344,7 @@ export const AskDoubtView: React.FC<AskDoubtViewProps> = ({
                     disabled={!question.trim() && !attachment}
                     className="min-h-[44px] inline-flex items-center gap-2 px-5 py-2 rounded-full text-[13.5px] font-semibold bg-[#FBBFB5] text-[#141212] hover:bg-[#F7ACA0] active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed transition-all whitespace-nowrap shrink-0"
                   >
-                    <span>Explain step by step</span>
+                    <span>{hintFirst ? 'Get guided hints' : 'Explain step by step'}</span>
                     <ArrowRight className="w-4 h-4" strokeWidth={2.2} />
                   </button>
                 </div>
@@ -304,7 +376,7 @@ export const AskDoubtView: React.FC<AskDoubtViewProps> = ({
             <div className="bg-[#FFF9F8] rounded-[26px] p-6 space-y-5">
               <div className="border-b border-[#EED0CC] pb-4">
                 <p className="text-[12.5px] font-semibold text-[#6E5B59]">
-                  Analyzing question…
+                  Classifying topic &amp; checking approved study materials…
                 </p>
                 <div className="mt-2.5 h-5 w-3/4 bg-[#F6D5D0] rounded-full animate-pulse" />
               </div>
@@ -316,17 +388,23 @@ export const AskDoubtView: React.FC<AskDoubtViewProps> = ({
             </div>
           )}
 
-          {/* Editorial Answer Sheet (Matching Screen 3 simplicity) */}
+          {/* Editorial Answer Sheet */}
           {activeExchange && !isLoading && (
             <article className="space-y-5">
               {/* Question Header Tile */}
               <header className="bg-[#FFF9F8] rounded-[26px] p-5 sm:p-6">
                 <div className="flex flex-wrap items-center gap-2 text-[12.5px] font-medium text-[#6E5B59]">
                   <span className="text-[#141212] font-semibold">
-                    {activeExchange.answer.subject || activeExchange.subject}
+                    Classified: {activeExchange.answer.subject || activeExchange.subject}
                   </span>
                   <span aria-hidden="true">·</span>
                   <span>{activeExchange.createdAt}</span>
+                  {activeExchange.hintFirst && (
+                    <>
+                      <span aria-hidden="true">·</span>
+                      <span className="text-[#141212] font-semibold">Hint-first mode</span>
+                    </>
+                  )}
                   {activeExchange.attachmentName && (
                     <>
                       <span aria-hidden="true">·</span>
@@ -338,6 +416,14 @@ export const AskDoubtView: React.FC<AskDoubtViewProps> = ({
                       <span aria-hidden="true">·</span>
                       <span className="text-[#141212] font-semibold">
                         Escalated to {activeExchange.escalatedTo}
+                      </span>
+                    </>
+                  )}
+                  {activeExchange.reportedReason && (
+                    <>
+                      <span aria-hidden="true">·</span>
+                      <span className="text-[#141212] font-semibold">
+                        Flagged: {activeExchange.reportedReason}
                       </span>
                     </>
                   )}
@@ -388,17 +474,77 @@ export const AskDoubtView: React.FC<AskDoubtViewProps> = ({
                 </div>
               </section>
 
-              {/* Common Pitfall Blush Tile */}
-              <section className="bg-[#F6D5D0] rounded-[22px] p-5 space-y-1.5">
-                <h3 className="text-[12.5px] font-semibold text-[#141212]">
-                  Common pitfall
-                </h3>
-                <p className="text-[14.5px] text-[#141212]/90 leading-relaxed">
-                  <MathText text={activeExchange.answer.commonPitfall} />
-                </p>
-              </section>
+              {/* Cited Approved Materials */}
+              {activeExchange.answer.citedSources &&
+                activeExchange.answer.citedSources.length > 0 && (
+                  <section className="bg-[#FFF9F8] rounded-[22px] p-4 sm:p-5 space-y-2.5">
+                    <div className="flex items-center justify-between gap-2">
+                      <h3 className="text-[12.5px] font-semibold text-[#6E5B59]">
+                        Grounded in approved study materials
+                      </h3>
+                      <button
+                        type="button"
+                        onClick={onOpenResources}
+                        className="text-[12.5px] font-semibold text-[#141212] hover:underline"
+                      >
+                        Open library →
+                      </button>
+                    </div>
+                    <ul className="space-y-1.5">
+                      {activeExchange.answer.citedSources.map((src) => (
+                        <li key={src}>
+                          <button
+                            type="button"
+                            onClick={onOpenResources}
+                            className="inline-flex items-center gap-2 text-left text-[13.5px] font-medium text-[#141212] hover:underline"
+                          >
+                            <BookOpen className="w-3.5 h-3.5 text-[#6E5B59] shrink-0" strokeWidth={2} />
+                            <span>{src}</span>
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  </section>
+                )}
 
-              {/* Action Row (Screen 3 style soft peach & clean pills) */}
+              {/* Common Pitfall & Practice Question */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <section className="bg-[#F6D5D0] rounded-[22px] p-5 space-y-1.5">
+                  <h3 className="text-[12.5px] font-semibold text-[#141212]">
+                    Common pitfall
+                  </h3>
+                  <p className="text-[14px] text-[#141212]/90 leading-relaxed">
+                    <MathText text={activeExchange.answer.commonPitfall} />
+                  </p>
+                </section>
+
+                {activeExchange.answer.practiceQuestion && (
+                  <section className="bg-[#FFF9F8] rounded-[22px] p-5 space-y-2.5 flex flex-col justify-between">
+                    <div className="space-y-1.5">
+                      <h3 className="text-[12.5px] font-semibold text-[#6E5B59]">
+                        Practice check
+                      </h3>
+                      <p className="text-[14px] font-medium text-[#141212] leading-relaxed">
+                        <MathText text={activeExchange.answer.practiceQuestion.prompt} />
+                      </p>
+                      {showPracticeHint && (
+                        <p className="pt-1 text-[13px] text-[#6E5B59] leading-relaxed">
+                          Hint: <MathText text={activeExchange.answer.practiceQuestion.hint} />
+                        </p>
+                      )}
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setShowPracticeHint((v) => !v)}
+                      className="self-start text-[12.5px] font-semibold text-[#141212] underline underline-offset-2"
+                    >
+                      {showPracticeHint ? 'Hide hint' : 'Show hint'}
+                    </button>
+                  </section>
+                )}
+              </div>
+
+              {/* Action Row */}
               <div className="flex flex-wrap items-center justify-between gap-2.5">
                 <div className="flex flex-wrap items-center gap-2">
                   <button
@@ -440,8 +586,25 @@ export const AskDoubtView: React.FC<AskDoubtViewProps> = ({
                   >
                     <ThumbsUp className="w-3.5 h-3.5" strokeWidth={2} />
                     <span>
-                      {activeExchange.helpfulVote === 'up' ? 'Helpful' : 'Mark helpful'}
+                      {activeExchange.helpfulVote === 'up' ? 'Helpful' : 'Rate helpful'}
                     </span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setReportOpenForId((prev) =>
+                        prev === activeExchange.id ? null : activeExchange.id
+                      )
+                    }
+                    className={`min-h-[40px] inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-[13px] font-semibold transition-colors whitespace-nowrap shrink-0 ${
+                      activeExchange.reportedReason
+                        ? 'bg-[#141212] text-[#FFFFFF]'
+                        : 'bg-[#FFF9F8] text-[#141212] hover:bg-[#F6D5D0]'
+                    }`}
+                  >
+                    <Flag className="w-3.5 h-3.5" strokeWidth={2} />
+                    <span>{activeExchange.reportedReason ? 'Reported' : 'Report error'}</span>
                   </button>
                 </div>
 
@@ -451,9 +614,33 @@ export const AskDoubtView: React.FC<AskDoubtViewProps> = ({
                   className="min-h-[40px] inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-[#FBBFB5] text-[13px] font-semibold text-[#141212] hover:bg-[#F7ACA0] active:scale-95 transition-all whitespace-nowrap shrink-0"
                 >
                   <UserPlus className="w-3.5 h-3.5" strokeWidth={2} />
-                  <span>Ask a mentor</span>
+                  <span>Escalate to mentor</span>
                 </button>
               </div>
+
+              {/* Inline Report Error Picker */}
+              {reportOpenForId === activeExchange.id && (
+                <div className="bg-[#FFF9F8] rounded-[20px] p-4 flex flex-wrap items-center justify-between gap-3">
+                  <span className="text-[13px] font-semibold text-[#141212]">
+                    Flag answer for faculty review:
+                  </span>
+                  <div className="flex flex-wrap items-center gap-2">
+                    {REPORT_REASONS.map((reason) => (
+                      <button
+                        key={reason}
+                        type="button"
+                        onClick={() => {
+                          onReportAnswer(activeExchange.id, reason);
+                          setReportOpenForId(null);
+                        }}
+                        className="px-3.5 py-1.5 rounded-full border border-[#141212]/30 text-[12.5px] font-medium text-[#141212] hover:bg-[#F6D5D0]"
+                      >
+                        {reason}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               {/* Follow-up Suggestions */}
               {activeExchange.answer.followUpPrompts.length > 0 && (
@@ -466,13 +653,16 @@ export const AskDoubtView: React.FC<AskDoubtViewProps> = ({
                       <button
                         key={followUp}
                         type="button"
-                        onClick={() =>
-                          onSubmitQuestion(
+                        onClick={() => {
+                          setShowPracticeHint(false);
+                          void onSubmitQuestion(
                             followUp,
                             (activeExchange.answer.subject as SubjectName) ||
-                              activeExchange.subject
-                          )
-                        }
+                              activeExchange.subject,
+                            null,
+                            hintFirst
+                          );
+                        }}
                         className="w-full min-h-[46px] text-left px-4 py-3 rounded-[18px] bg-[#F6D5D0] hover:bg-[#F3C9C3] text-[13.5px] font-medium text-[#141212] transition-colors flex items-center justify-between gap-4"
                       >
                         <span>
@@ -492,7 +682,7 @@ export const AskDoubtView: React.FC<AskDoubtViewProps> = ({
                     type="text"
                     value={question}
                     onChange={(e) => setQuestion(e.target.value)}
-                    placeholder="Ask a follow-up question..."
+                    placeholder={isListening ? 'Listening…' : 'Ask or speak a follow-up...'}
                     className="flex-1 bg-transparent text-[14.5px] text-[#141212] placeholder:text-[#6E5B59] focus:outline-none min-h-[40px]"
                   />
                   <input
@@ -502,6 +692,20 @@ export const AskDoubtView: React.FC<AskDoubtViewProps> = ({
                     onChange={handleFileChange}
                     className="hidden"
                   />
+                  <button
+                    type="button"
+                    onClick={toggleListening}
+                    aria-label={isListening ? 'Stop voice input' : 'Speak follow-up'}
+                    className={`min-h-[38px] min-w-[38px] flex items-center justify-center rounded-full ${
+                      isListening ? 'bg-[#141212] text-[#FFFFFF]' : 'bg-[#FCEBE8] text-[#141212]'
+                    }`}
+                  >
+                    {isListening ? (
+                      <MicOff className="w-4 h-4" strokeWidth={2} />
+                    ) : (
+                      <Mic className="w-4 h-4" strokeWidth={2} />
+                    )}
+                  </button>
                   <button
                     type="button"
                     onClick={() => fileInputRef.current?.click()}

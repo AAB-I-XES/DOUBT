@@ -20,11 +20,18 @@ export interface AISolutionStep {
   math?: string;
 }
 
+export interface PracticeQuestion {
+  prompt: string;
+  hint: string;
+}
+
 export interface AIStructuredAnswer {
   subject: string;
   conceptSummary: string;
   steps: AISolutionStep[];
   commonPitfall: string;
+  citedSources: string[];
+  practiceQuestion?: PracticeQuestion;
   followUpPrompts: string[];
 }
 
@@ -41,9 +48,11 @@ export interface DoubtExchange {
   subject: SubjectName;
   createdAt: string;
   attachmentName?: string;
+  hintFirst?: boolean;
   answer: AIStructuredAnswer;
   helpfulVote?: 'up' | 'down' | null;
   escalatedTo?: string | null;
+  reportedReason?: string | null;
 }
 
 export interface RecentDoubtSummary {
@@ -119,6 +128,7 @@ export interface ResourceItem {
 export interface StudentProfile {
   name: string;
   program: string;
+  university: string;
   semester: string;
   rollNumber: string;
   avatarUrl: string;

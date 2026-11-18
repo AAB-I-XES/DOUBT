@@ -16,10 +16,11 @@ export const SUBJECT_LIST = [
 ] as const;
 
 export const INITIAL_PROFILE: StudentProfile = {
-  name: 'Shristii',
-  program: 'B.Tech Computer Science',
+  name: 'Shristii Baruah',
+  program: 'B.Tech CSE · Information Technology (AI & ML)',
+  university: 'Assam Skill University',
   semester: 'First Year · Semester 1',
-  rollNumber: '2026CS1042',
+  rollNumber: 'IT26B0120',
   avatarUrl: '',
   courses: [
     'MA101 · Maths & Calculus (Abhishek Sharma)',
@@ -74,6 +75,13 @@ export const INITIAL_DOUBT_EXCHANGES: DoubtExchange[] = [
       ],
       commonPitfall:
         'Using L’Hôpital’s rule here creates a circular argument in first-principles calculus, because proving $\\frac{d}{dx}(\\sin x) = \\cos x$ itself depends on knowing $\\lim_{x \\to 0} \\frac{\\sin x}{x} = 1$. Also make sure $x$ is in radians, not degrees.',
+      citedSources: [
+        'Limits, Continuity & Epsilon-Delta Proofs (MA101 · Abhishek Sharma)',
+      ],
+      practiceQuestion: {
+        prompt: 'Evaluate $\\lim_{x \\to 0} \\frac{\\sin(3x)}{5x}$ using the standard limit.',
+        hint: 'Rewrite the expression as $\\frac{3}{5} \\cdot \\frac{\\sin(3x)}{3x}$ and substitute $u = 3x$.',
+      },
       followUpPrompts: [
         'How does this limit help evaluate $\\lim_{x \\to 0} \\frac{1 - \\cos x}{x^2}$?',
         'What changes if $x$ is measured in degrees instead of radians?',
@@ -108,6 +116,13 @@ export const INITIAL_DOUBT_EXCHANGES: DoubtExchange[] = [
       ],
       commonPitfall:
         'Assuming a `tail` pointer makes tail deletion $O(1)$. A `tail` pointer only makes tail insertion $O(1)$; tail deletion becomes $O(1)$ only in a doubly linked list with `prev` pointers.',
+      citedSources: [
+        'Pointers, Dynamic Memory & Linked Lists in C (CS101 · Munsifa Khan)',
+      ],
+      practiceQuestion: {
+        prompt: 'What is the time complexity of deleting the *first* node when you only have a `head` pointer?',
+        hint: 'Check if you need to traverse the list or only advance `head = head->next` after freeing the first node.',
+      },
       followUpPrompts: [
         'Write the C pointer steps for deleting a node without losing memory.',
         'Compare memory overhead between singly and doubly linked lists.',
@@ -245,7 +260,7 @@ export const INITIAL_COMMUNITY_QUESTIONS: CommunityQuestion[] = [
     id: 'comm-2',
     title: 'Why are eigenvectors corresponding to distinct eigenvalues of a symmetric matrix orthogonal?',
     body: 'In Lecture 11 we used $A = A^T$ to prove $v_1 \\cdot v_2 = 0$, but I missed why $(\\lambda_1 - \\lambda_2)(v_1^T v_2) = 0$ forces the dot product to zero.',
-    studentName: 'Nadia Patel',
+    studentName: 'Aichajya Neog',
     isAnonymous: false,
     subject: 'Linear Algebra',
     timestamp: '4h ago',
@@ -280,7 +295,7 @@ export const INITIAL_COMMUNITY_QUESTIONS: CommunityQuestion[] = [
     id: 'comm-4',
     title: 'How do we handle "don’t care" conditions (X) cleanly in a 4-variable K-map?',
     body: 'When simplifying SOP expressions with `d(1, 5, 12, 15)`, do we have to include all X cells in our groups, or only the ones that enlarge a group of 1s?',
-    studentName: 'Samir Rao',
+    studentName: 'S Sushmi Singha',
     isAnonymous: false,
     subject: 'Digital Logic',
     timestamp: '1d ago',
@@ -292,7 +307,7 @@ export const INITIAL_COMMUNITY_QUESTIONS: CommunityQuestion[] = [
     id: 'comm-5',
     title: 'Difference between uniform continuity and ordinary continuity on an open interval $(0, 1)$',
     body: 'Why is $f(x) = \\frac{1}{x}$ continuous on $(0, 1)$ yet not uniformly continuous there?',
-    studentName: 'Maya Chen',
+    studentName: 'Shristii Baruah',
     isAnonymous: false,
     subject: 'Calculus',
     timestamp: '1d ago',

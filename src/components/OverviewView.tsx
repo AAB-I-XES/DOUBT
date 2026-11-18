@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowRight, Search, SlidersHorizontal, User } from 'lucide-react';
+import { ArrowRight, Mic, MicOff, Search, SlidersHorizontal, User } from 'lucide-react';
 import {
   Mentor,
   NavTab,
@@ -7,6 +7,7 @@ import {
   SubjectName,
 } from '../types/doubtly';
 import { SUBJECT_LIST } from '../data/academicData';
+import { useVoiceInput } from '../hooks/useVoiceInput';
 
 interface OverviewViewProps {
   recentDoubts: RecentDoubtSummary[];
@@ -35,6 +36,10 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
   const [subject, setSubject] = useState<SubjectName>('Calculus');
   const [activeFilter, setActiveFilter] = useState<string>('All');
 
+  const { isListening, voiceUnsupported, toggleListening } = useVoiceInput((text) => {
+    setQuestion((prev) => (prev ? `${prev} ${text}` : text));
+  });
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const trimmed = question.trim();
@@ -50,11 +55,11 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
 
   return (
     <div className="min-h-full bg-[#FBBFB5]">
-      {/* Top Coral Peach Header Zone (Matching Reference Screen 2) */}
+      {/* Top Coral Peach Header Zone */}
       <div className="px-4 sm:px-8 pt-5 pb-7 max-w-5xl mx-auto">
         <div className="flex items-center justify-between gap-3 md:hidden mb-4">
-          <span className="text-[13px] font-bold tracking-[0.16em] text-[#141212]">
-            DOUBTLY
+          <span className="text-[14px] font-bold tracking-[0.04em] text-[#141212]">
+            DoubtBridge
           </span>
           <button
             type="button"
@@ -66,55 +71,80 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
           </button>
         </div>
 
-        {/* White Pill Search / Quick Doubt Bar */}
-        <form onSubmit={handleSubmit} className="flex items-center gap-2.5">
-          <div className="flex-1 flex items-center gap-2.5 bg-[#FFFFFF] rounded-full px-4 h-12 shadow-[0_2px_10px_rgba(20,18,18,0.05)]">
-            <Search className="w-4 h-4 text-[#6E5B59] shrink-0" strokeWidth={2} />
-            <label htmlFor="overview-question-input" className="sr-only">
-              What are you stuck on?
-            </label>
-            <input
-              id="overview-question-input"
-              type="text"
-              value={question}
-              onChange={(e) => setQuestion(e.target.value)}
-              placeholder="What are you stuck on?"
-              className="flex-1 min-w-0 bg-transparent text-[14.5px] text-[#141212] placeholder:text-[#6E5B59] focus:outline-none"
-            />
-            <select
-              aria-label="Subject"
-              value={subject}
-              onChange={(e) => setSubject(e.target.value as SubjectName)}
-              className="hidden sm:block text-[12.5px] font-medium text-[#141212] bg-[#FCEBE8] rounded-full px-3 py-1 focus:outline-none"
-            >
-              {SUBJECT_LIST.map((s) => (
-                <option key={s} value={s}>
-                  {s}
-                </option>
-              ))}
-              <option value="General">General</option>
-            </select>
-          </div>
+        {/* White Pill Search / Type or Speak Doubt Bar */}
+        <form onSubmit={handleSubmit} className="space-y-1.5">
+          <div className="flex items-center gap-2">
+            <div className="flex-1 flex items-center gap-2 bg-[#FFFFFF] rounded-full px-4 h-12 shadow-[0_2px_10px_rgba(20,18,18,0.05)]">
+              <Search className="w-4 h-4 text-[#6E5B59] shrink-0" strokeWidth={2} />
+              <label htmlFor="overview-question-input" className="sr-only">
+                Type or speak what you are stuck on
+              </label>
+              <input
+                id="overview-question-input"
+                type="text"
+                value={question}
+                onChange={(e) => setQuestion(e.target.value)}
+                placeholder={isListening ? 'Listening… speak your doubt' : 'Type or speak what you are stuck on...'}
+                className="flex-1 min-w-0 bg-transparent text-[14.5px] text-[#141212] placeholder:text-[#6E5B59] focus:outline-none"
+              />
+              <select
+                aria-label="Subject"
+                value={subject}
+                onChange={(e) => setSubject(e.target.value as SubjectName)}
+                className="hidden sm:block text-[12.5px] font-medium text-[#141212] bg-[#FCEBE8] rounded-full px-3 py-1 focus:outline-none"
+              >
+                {SUBJECT_LIST.map((s) => (
+                  <option key={s} value={s}>
+                    {s}
+                  </option>
+                ))}
+                <option value="General">General</option>
+              </select>
 
-          <button
-            type="submit"
-            aria-label="Ask DOUBTLY"
-            disabled={!question.trim()}
-            className="w-12 h-12 rounded-full bg-[#141212] text-[#FFFFFF] flex items-center justify-center shrink-0 hover:bg-[#2B2626] active:scale-95 disabled:opacity-45 transition-all"
-          >
-            <ArrowRight className="w-4 h-4" strokeWidth={2.2} />
-          </button>
+              <button
+                type="button"
+                onClick={toggleListening}
+                aria-label={isListening ? 'Stop voice input' : 'Speak a question'}
+                title={isListening ? 'Stop voice input' : 'Speak a question'}
+                className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 transition-colors ${
+                  isListening
+                    ? 'bg-[#141212] text-[#FFFFFF]'
+                    : 'bg-[#FCEBE8] text-[#141212] hover:bg-[#F6D5D0]'
+                }`}
+              >
+                {isListening ? (
+                  <MicOff className="w-3.5 h-3.5" strokeWidth={2} />
+                ) : (
+                  <Mic className="w-3.5 h-3.5" strokeWidth={2} />
+                )}
+              </button>
+            </div>
+
+            <button
+              type="submit"
+              aria-label="Ask DoubtBridge"
+              disabled={!question.trim()}
+              className="w-12 h-12 rounded-full bg-[#141212] text-[#FFFFFF] flex items-center justify-center shrink-0 hover:bg-[#2B2626] active:scale-95 disabled:opacity-45 transition-all"
+            >
+              <ArrowRight className="w-4 h-4" strokeWidth={2.2} />
+            </button>
+          </div>
+          {voiceUnsupported && (
+            <p className="text-[12px] font-medium text-[#141212] px-3">
+              Voice dictation is unavailable in this browser—please type or attach an image.
+            </p>
+          )}
         </form>
       </div>
 
       {/* Curved Pale Misty Rose Main Sheet */}
       <div className="bg-[#FCEBE8] rounded-t-[32px] min-h-[calc(100vh-110px)] px-4 sm:px-8 pt-7 pb-28 md:pb-12">
         <div className="max-w-5xl mx-auto space-y-8">
-          {/* Editorial Two-Line Hero Header + Action */}
+          {/* Editorial Header */}
           <div className="flex items-end justify-between gap-4">
             <div>
               <p className="text-[12.5px] font-medium text-[#6E5B59]">
-                Semester 1 · Computer Science
+                Assam Skill University · 1st Semester CSE (AI-ML)
               </p>
               <h1 className="mt-1 text-[28px] sm:text-[34px] font-bold tracking-[-0.03em] text-[#141212] leading-[1.08]">
                 Good morning,
@@ -126,14 +156,14 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
             <button
               type="button"
               onClick={() => onNavigate('ask')}
-              aria-label="Open full Ask AI workspace"
+              aria-label="Open full Ask Doubt workspace"
               className="w-10 h-10 rounded-full bg-[#F6D5D0] flex items-center justify-center text-[#141212] hover:bg-[#FBBFB5] transition-colors shrink-0"
             >
               <SlidersHorizontal className="w-4 h-4" strokeWidth={2} />
             </button>
           </div>
 
-          {/* Horizontal Black/Outlined Subject Filter Pills (Exact Picture Style) */}
+          {/* Horizontal Black/Outlined Subject Filter Pills */}
           <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-0.5">
             {['All', ...SUBJECT_LIST].map((subj) => {
               const active = activeFilter === subj;
@@ -154,7 +184,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
             })}
           </div>
 
-          {/* Recent Doubts 2-Column Mobile / 2-Column Desktop Blush Tile Grid (Exact Picture Style) */}
+          {/* Recent Doubts Blush Tile Grid */}
           <section className="space-y-3">
             <div className="flex items-center justify-between">
               <h2 className="text-[15px] font-semibold text-[#141212]">
@@ -165,7 +195,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
                 onClick={() => onNavigate('community')}
                 className="text-[13px] font-medium text-[#6E5B59] hover:text-[#141212]"
               >
-                Community →
+                Community &amp; insights →
               </button>
             </div>
 
@@ -193,9 +223,8 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
             </div>
           </section>
 
-          {/* Learning Summary + Available Mentors Responsive Split */}
+          {/* Learning Summary + Available Mentors */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-            {/* Compact Summary Tiles */}
             <section className="lg:col-span-5 space-y-3">
               <h2 className="text-[15px] font-semibold text-[#141212]">
                 This week
@@ -222,11 +251,10 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
               </div>
             </section>
 
-            {/* Available Mentors (Picture-Free Monograms + Soft Peach Action Pills) */}
             <section className="lg:col-span-7 space-y-3">
               <div className="flex items-center justify-between">
                 <h2 className="text-[15px] font-semibold text-[#141212]">
-                  Available mentors
+                  Faculty &amp; mentors
                 </h2>
                 <button
                   type="button"
