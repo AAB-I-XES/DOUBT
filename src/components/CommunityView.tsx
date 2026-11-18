@@ -79,330 +79,330 @@ export const CommunityView: React.FC<CommunityViewProps> = ({
   };
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex flex-wrap items-center justify-between gap-4">
-        <div>
-          <h1 className="text-[26px] sm:text-[30px] font-bold tracking-[-0.025em] text-[#221D1E]">
-            Community
-          </h1>
-          <p className="mt-0.5 text-[13.5px] text-[#7B6F71]">
-            Peer discussions reviewed by senior mentors and course faculty.
-          </p>
-        </div>
-
-        <button
-          type="button"
-          onClick={() => setIsComposerOpen(true)}
-          className="min-h-[42px] inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-[13.5px] font-semibold bg-[#C45B72] text-[#FFFFFF] hover:bg-[#A64258] active:scale-[0.98] transition-all whitespace-nowrap shrink-0"
-        >
-          <Plus className="w-4 h-4" strokeWidth={2.2} />
-          <span>Ask community</span>
-        </button>
-      </div>
-
-      {/* iOS Search Bar & Segmented Control */}
-      <div className="space-y-3">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <div className="relative flex-1 max-w-md">
-            <Search
-              className="w-4 h-4 text-[#7B6F71] absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none"
-              strokeWidth={1.85}
-            />
+    <div className="min-h-full bg-[#FBBFB5]">
+      {/* Top Coral Peach Header Zone */}
+      <div className="px-4 sm:px-8 pt-6 pb-7 max-w-5xl mx-auto">
+        <div className="flex items-center gap-2.5">
+          <div className="flex-1 flex items-center gap-2.5 bg-[#FFFFFF] rounded-full px-4 h-12 shadow-[0_2px_10px_rgba(20,18,18,0.05)]">
+            <Search className="w-4 h-4 text-[#6E5B59] shrink-0" strokeWidth={2} />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search questions or topics..."
-              className="w-full min-h-[42px] pl-10 pr-3.5 py-2 bg-[#FFFFFF] border border-[#EFE2E2] rounded-xl text-[14px] text-[#221D1E] placeholder:text-[#7B6F71] focus:outline-none focus:border-[#C45B72]"
+              placeholder="Search peer questions or topics..."
+              className="flex-1 min-w-0 bg-transparent text-[14.5px] text-[#141212] placeholder:text-[#6E5B59] focus:outline-none"
             />
           </div>
 
-          {/* iOS Segmented Control */}
-          <div className="inline-flex items-center bg-[#F4E3E3] p-1 rounded-xl self-start">
-            {(
-              [
-                { id: 'all', label: 'All' },
-                { id: 'unanswered', label: 'Unanswered' },
-                { id: 'answered', label: 'Answered' },
-              ] as const
-            ).map((tab) => (
-              <button
-                key={tab.id}
-                type="button"
-                onClick={() => setStatusFilter(tab.id)}
-                className={`min-h-[34px] px-3.5 py-1 rounded-lg text-[12.5px] transition-all whitespace-nowrap shrink-0 ${
-                  statusFilter === tab.id
-                    ? 'bg-[#FFFFFF] text-[#221D1E] font-semibold shadow-[0_1px_2px_rgba(166,66,88,0.08)]'
-                    : 'text-[#7B6F71] hover:text-[#221D1E] font-medium'
-                }`}
-              >
-                {tab.label}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Subject Filter Tabs */}
-        <div className="flex items-center gap-1.5 overflow-x-auto pb-1">
-          {['All', ...SUBJECT_LIST].map((subj) => (
-            <button
-              key={subj}
-              type="button"
-              onClick={() => setSubjectFilter(subj)}
-              className={`min-h-[36px] px-3.5 py-1.5 rounded-xl text-[13px] border transition-colors whitespace-nowrap shrink-0 ${
-                subjectFilter === subj
-                  ? 'border-[#E7BFC4] bg-[#FFE4E1] text-[#A64258] font-semibold'
-                  : 'border-transparent bg-[#FFFFFF]/70 text-[#7B6F71] hover:text-[#221D1E] hover:bg-[#FFFFFF]'
-              }`}
-            >
-              {subj}
-            </button>
-          ))}
+          <button
+            type="button"
+            onClick={() => setIsComposerOpen(true)}
+            className="h-12 px-4 sm:px-5 rounded-full bg-[#141212] text-[#FFFFFF] text-[13px] font-semibold inline-flex items-center gap-1.5 hover:bg-[#2B2626] active:scale-95 transition-all shrink-0"
+          >
+            <Plus className="w-4 h-4" strokeWidth={2.2} />
+            <span>Ask</span>
+          </button>
         </div>
       </div>
 
-      {/* Main Content: Inset Grouped List or Detail Thread */}
-      {activeQuestion ? (
-        <div className="space-y-5">
-          <button
-            type="button"
-            onClick={() => onSelectQuestion(null)}
-            className="min-h-[40px] inline-flex items-center text-[13.5px] font-medium text-[#C45B72] hover:text-[#A64258] transition-colors"
-          >
-            ← All questions
-          </button>
-
-          <article className="bg-[#FFFFFF] border border-[#EFE2E2] rounded-2xl p-5 sm:p-6 space-y-4 shadow-[0_1px_3px_rgba(166,66,88,0.04)]">
-            <div className="flex flex-wrap items-center justify-between gap-2 text-[12.5px] text-[#7B6F71]">
-              <div className="flex flex-wrap items-center gap-1.5">
-                <span className="font-semibold text-[#221D1E]">
-                  {activeQuestion.isAnonymous ? 'Anonymous student' : activeQuestion.studentName}
-                </span>
-                <span aria-hidden="true">·</span>
-                <span>{activeQuestion.subject}</span>
-                <span aria-hidden="true">·</span>
-                <span>{activeQuestion.timestamp}</span>
-              </div>
-
-              <span
-                className={`text-[12px] font-medium px-2.5 py-0.5 rounded-lg border ${
-                  activeQuestion.isAnswered
-                    ? 'border-[#EFE2E2] bg-[#FCF6F6] text-[#7B6F71]'
-                    : 'border-[#F2CECA] bg-[#FFE4E1] text-[#A64258]'
-                }`}
-              >
-                {activeQuestion.verifiedByFaculty
-                  ? 'Faculty verified'
-                  : activeQuestion.isAnswered
-                  ? 'Answered'
-                  : 'Unanswered'}
-              </span>
-            </div>
-
-            <h2 className="text-[19px] font-semibold text-[#221D1E] leading-snug">
-              <MathText text={activeQuestion.title} />
-            </h2>
-
-            <p className="text-[15px] text-[#221D1E]/90 leading-[1.68]">
-              <MathText text={activeQuestion.body} />
-            </p>
-
-            <div className="pt-2 flex items-center gap-4">
-              <button
-                type="button"
-                onClick={() => onToggleUpvote(activeQuestion.id)}
-                className={`min-h-[40px] inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl border text-[13px] font-medium transition-colors ${
-                  activeQuestion.upvotedByMe
-                    ? 'border-[#E7BFC4] bg-[#FFE4E1] text-[#A64258]'
-                    : 'border-[#EFE2E2] bg-[#FCF6F6] text-[#221D1E] hover:border-[#C45B72]'
-                }`}
-              >
-                <ArrowUp className="w-3.5 h-3.5" strokeWidth={2} />
-                <span className="tabular-nums">{activeQuestion.upvotes}</span>
-                <span>Helpful</span>
-              </button>
-
-              <span className="text-[13px] text-[#7B6F71] tabular-nums">
-                {activeQuestion.replies.length}{' '}
-                {activeQuestion.replies.length === 1 ? 'response' : 'responses'}
-              </span>
-            </div>
-          </article>
-
-          {/* Replies */}
-          <section className="space-y-3">
-            <h3 className="text-[14px] font-semibold text-[#221D1E] px-1">
-              Responses
-            </h3>
-
-            {activeQuestion.replies.length === 0 ? (
-              <p className="py-8 text-center text-[13.5px] text-[#7B6F71] border border-[#EFE2E2] rounded-2xl bg-[#FFFFFF]">
-                No peer or mentor responses yet. Share an explanation below.
+      {/* Curved Pale Misty Rose Sheet */}
+      <div className="bg-[#FCEBE8] rounded-t-[32px] min-h-[calc(100vh-110px)] px-4 sm:px-8 pt-7 pb-28 md:pb-12">
+        <div className="max-w-5xl mx-auto space-y-6">
+          <div className="flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <h1 className="text-[28px] sm:text-[32px] font-bold tracking-[-0.03em] text-[#141212] leading-tight">
+                Community
+              </h1>
+              <p className="mt-0.5 text-[13px] text-[#6E5B59]">
+                Peer Q&amp;A verified by senior mentors and faculty
               </p>
-            ) : (
-              <ul className="bg-[#FFFFFF] border border-[#EFE2E2] rounded-2xl divide-y divide-[#EFE2E2] overflow-hidden">
-                {activeQuestion.replies.map((reply) => (
-                  <li key={reply.id} className="p-4 sm:p-5 space-y-2">
-                    <div className="flex flex-wrap items-center justify-between gap-2 text-[12.5px]">
-                      <div className="flex items-center gap-1.5">
-                        <span className="font-semibold text-[#221D1E]">
-                          {reply.authorName}
-                        </span>
-                        <span aria-hidden="true" className="text-[#7B6F71]">·</span>
-                        <span className="text-[#7B6F71]">{reply.authorRole}</span>
-                        <span aria-hidden="true" className="text-[#7B6F71]">·</span>
-                        <span className="text-[#7B6F71]">{reply.timestamp}</span>
-                      </div>
+            </div>
 
-                      {reply.isVerified && (
-                        <span className="inline-flex items-center gap-1 text-[12px] text-[#A64258] font-semibold">
-                          <CheckCircle2 className="w-3.5 h-3.5 text-[#C45B72]" strokeWidth={2} />
-                          <span>Verified</span>
-                        </span>
-                      )}
-                    </div>
-
-                    <p className="text-[14.5px] text-[#221D1E] leading-[1.65]">
-                      <MathText text={reply.content} />
-                    </p>
-                  </li>
-                ))}
-              </ul>
-            )}
-
-            {/* Add Reply Form */}
-            <form
-              onSubmit={handleReplySubmit}
-              className="bg-[#FFFFFF] border border-[#EFE2E2] rounded-2xl p-4 space-y-3 focus-within:border-[#C45B72]"
-            >
-              <label htmlFor="community-reply" className="block text-[12.5px] font-medium text-[#7B6F71]">
-                Write a response as Alex Rivera
-              </label>
-              <textarea
-                id="community-reply"
-                rows={3}
-                value={replyDraft}
-                onChange={(e) => setReplyDraft(e.target.value)}
-                placeholder="Explain clearly or share a helpful hint (use $...$ for LaTeX math)..."
-                className="w-full resize-none bg-transparent text-[14.5px] text-[#221D1E] placeholder:text-[#7B6F71] focus:outline-none"
-              />
-              <div className="flex justify-end">
+            <div className="inline-flex items-center gap-1.5">
+              {(
+                [
+                  { id: 'all', label: 'All' },
+                  { id: 'unanswered', label: 'Unanswered' },
+                  { id: 'answered', label: 'Answered' },
+                ] as const
+              ).map((tab) => (
                 <button
-                  type="submit"
-                  disabled={!replyDraft.trim()}
-                  className="min-h-[40px] px-4 py-1.5 rounded-xl text-[13.5px] font-semibold bg-[#C45B72] text-[#FFFFFF] hover:bg-[#A64258] disabled:opacity-40 transition-colors"
-                >
-                  Post reply
-                </button>
-              </div>
-            </form>
-          </section>
-        </div>
-      ) : (
-        <div className="border border-[#EFE2E2] rounded-2xl bg-[#FFFFFF] divide-y divide-[#EFE2E2] overflow-hidden shadow-[0_1px_3px_rgba(166,66,88,0.04)]">
-          {filteredQuestions.length === 0 ? (
-            <div className="py-12 px-6 text-center space-y-1.5">
-              <p className="text-[15px] font-semibold text-[#221D1E]">
-                No matching questions
-              </p>
-              <p className="text-[13px] text-[#7B6F71]">
-                Try clearing your filters or ask the community directly.
-              </p>
-            </div>
-          ) : (
-            filteredQuestions.map((q) => (
-              <div
-                key={q.id}
-                className="p-4 sm:px-5 sm:py-4 hover:bg-[#FCF6F6] transition-colors flex items-start gap-3.5"
-              >
-                <button
+                  key={tab.id}
                   type="button"
-                  onClick={() => onToggleUpvote(q.id)}
-                  aria-label={`Upvote question: ${q.title}`}
-                  className={`flex flex-col items-center justify-center min-w-[44px] min-h-[48px] py-1.5 rounded-xl border text-[12px] shrink-0 transition-colors ${
-                    q.upvotedByMe
-                      ? 'border-[#E7BFC4] bg-[#FFE4E1] text-[#A64258] font-semibold'
-                      : 'border-[#EFE2E2] bg-[#FCF6F6] text-[#7B6F71] hover:text-[#221D1E]'
+                  onClick={() => setStatusFilter(tab.id)}
+                  className={`min-h-[34px] px-3.5 py-1 rounded-full text-[12.5px] font-semibold transition-all whitespace-nowrap shrink-0 ${
+                    statusFilter === tab.id
+                      ? 'bg-[#141212] text-[#FFFFFF]'
+                      : 'border border-[#141212]/30 text-[#141212] hover:bg-[#F6D5D0]'
                   }`}
                 >
-                  <ArrowUp className="w-3.5 h-3.5" strokeWidth={2} />
-                  <span className="tabular-nums mt-0.5">{q.upvotes}</span>
+                  {tab.label}
                 </button>
+              ))}
+            </div>
+          </div>
 
-                <div className="min-w-0 flex-1">
-                  <div className="flex items-start justify-between gap-3">
+          {/* Subject Pills */}
+          {!activeQuestion && (
+            <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-0.5">
+              {['All', ...SUBJECT_LIST].map((subj) => (
+                <button
+                  key={subj}
+                  type="button"
+                  onClick={() => setSubjectFilter(subj)}
+                  className={`min-h-[36px] px-4 py-1.5 rounded-full text-[13px] font-medium transition-all whitespace-nowrap shrink-0 ${
+                    subjectFilter === subj
+                      ? 'bg-[#141212] text-[#FFFFFF]'
+                      : 'border border-[#141212]/35 text-[#141212] hover:bg-[#F6D5D0]/70'
+                  }`}
+                >
+                  {subj}
+                </button>
+              ))}
+            </div>
+          )}
+
+          {/* Thread Detail or Card List */}
+          {activeQuestion ? (
+            <div className="max-w-3xl space-y-5">
+              <button
+                type="button"
+                onClick={() => onSelectQuestion(null)}
+                className="min-h-[38px] px-4 py-1.5 rounded-full bg-[#F6D5D0] text-[13px] font-semibold text-[#141212] hover:bg-[#F3C9C3] transition-colors"
+              >
+                ← All questions
+              </button>
+
+              <article className="bg-[#FFF9F8] rounded-[26px] p-5 sm:p-6 space-y-4">
+                <div className="flex flex-wrap items-center justify-between gap-2 text-[12.5px] text-[#6E5B59]">
+                  <div className="flex flex-wrap items-center gap-1.5">
+                    <span className="font-semibold text-[#141212]">
+                      {activeQuestion.isAnonymous ? 'Anonymous student' : activeQuestion.studentName}
+                    </span>
+                    <span aria-hidden="true">·</span>
+                    <span>{activeQuestion.subject}</span>
+                    <span aria-hidden="true">·</span>
+                    <span>{activeQuestion.timestamp}</span>
+                  </div>
+
+                  <span
+                    className={`text-[12px] font-semibold px-3 py-0.5 rounded-full ${
+                      activeQuestion.isAnswered
+                        ? 'bg-[#FCEBE8] text-[#6E5B59]'
+                        : 'bg-[#FBBFB5] text-[#141212]'
+                    }`}
+                  >
+                    {activeQuestion.verifiedByFaculty
+                      ? 'Faculty verified'
+                      : activeQuestion.isAnswered
+                      ? 'Answered'
+                      : 'Unanswered'}
+                  </span>
+                </div>
+
+                <h2 className="text-[19px] font-bold text-[#141212] leading-snug">
+                  <MathText text={activeQuestion.title} />
+                </h2>
+
+                <p className="text-[15px] text-[#141212]/90 leading-[1.68]">
+                  <MathText text={activeQuestion.body} />
+                </p>
+
+                <div className="pt-2 flex items-center gap-4">
+                  <button
+                    type="button"
+                    onClick={() => onToggleUpvote(activeQuestion.id)}
+                    className={`min-h-[40px] inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-[13px] font-semibold transition-colors ${
+                      activeQuestion.upvotedByMe
+                        ? 'bg-[#141212] text-[#FFFFFF]'
+                        : 'bg-[#F6D5D0] text-[#141212] hover:bg-[#FBBFB5]'
+                    }`}
+                  >
+                    <ArrowUp className="w-3.5 h-3.5" strokeWidth={2.2} />
+                    <span className="tabular-nums">{activeQuestion.upvotes}</span>
+                    <span>Helpful</span>
+                  </button>
+
+                  <span className="text-[13px] font-medium text-[#6E5B59] tabular-nums">
+                    {activeQuestion.replies.length}{' '}
+                    {activeQuestion.replies.length === 1 ? 'response' : 'responses'}
+                  </span>
+                </div>
+              </article>
+
+              <section className="space-y-3">
+                <h3 className="text-[14px] font-semibold text-[#141212] px-1">
+                  Responses
+                </h3>
+
+                {activeQuestion.replies.length === 0 ? (
+                  <p className="py-8 text-center text-[13.5px] text-[#6E5B59] rounded-[22px] bg-[#FFF9F8]">
+                    No peer or mentor responses yet. Share an explanation below.
+                  </p>
+                ) : (
+                  <div className="space-y-3">
+                    {activeQuestion.replies.map((reply) => (
+                      <div
+                        key={reply.id}
+                        className="bg-[#FFF9F8] rounded-[22px] p-4 sm:p-5 space-y-2"
+                      >
+                        <div className="flex flex-wrap items-center justify-between gap-2 text-[12.5px]">
+                          <div className="flex items-center gap-1.5">
+                            <span className="font-semibold text-[#141212]">
+                              {reply.authorName}
+                            </span>
+                            <span aria-hidden="true" className="text-[#6E5B59]">·</span>
+                            <span className="text-[#6E5B59]">{reply.authorRole}</span>
+                            <span aria-hidden="true" className="text-[#6E5B59]">·</span>
+                            <span className="text-[#6E5B59]">{reply.timestamp}</span>
+                          </div>
+
+                          {reply.isVerified && (
+                            <span className="inline-flex items-center gap-1 text-[12px] text-[#141212] font-semibold">
+                              <CheckCircle2 className="w-3.5 h-3.5" strokeWidth={2} />
+                              <span>Verified</span>
+                            </span>
+                          )}
+                        </div>
+
+                        <p className="text-[14.5px] text-[#141212] leading-[1.65]">
+                          <MathText text={reply.content} />
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                <form
+                  onSubmit={handleReplySubmit}
+                  className="bg-[#FFF9F8] rounded-[22px] p-4 space-y-3"
+                >
+                  <label htmlFor="community-reply" className="block text-[12.5px] font-semibold text-[#6E5B59]">
+                    Write a response as Alex Rivera
+                  </label>
+                  <textarea
+                    id="community-reply"
+                    rows={3}
+                    value={replyDraft}
+                    onChange={(e) => setReplyDraft(e.target.value)}
+                    placeholder="Explain clearly or share a helpful hint (use $...$ for LaTeX math)..."
+                    className="w-full resize-none bg-transparent text-[14.5px] text-[#141212] placeholder:text-[#6E5B59] focus:outline-none"
+                  />
+                  <div className="flex justify-end">
+                    <button
+                      type="submit"
+                      disabled={!replyDraft.trim()}
+                      className="min-h-[40px] px-5 py-1.5 rounded-full text-[13px] font-semibold bg-[#FBBFB5] text-[#141212] hover:bg-[#F7ACA0] disabled:opacity-40 transition-colors"
+                    >
+                      Post reply
+                    </button>
+                  </div>
+                </form>
+              </section>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+              {filteredQuestions.length === 0 ? (
+                <div className="md:col-span-2 py-12 px-6 text-center bg-[#FFF9F8] rounded-[24px] space-y-1.5">
+                  <p className="text-[15px] font-semibold text-[#141212]">
+                    No matching questions
+                  </p>
+                  <p className="text-[13px] text-[#6E5B59]">
+                    Try clearing your filters or ask the community directly.
+                  </p>
+                </div>
+              ) : (
+                filteredQuestions.map((q) => (
+                  <div
+                    key={q.id}
+                    className="bg-[#FFF9F8] hover:bg-[#F6D5D0]/65 rounded-[22px] p-4 sm:p-5 transition-colors flex items-start gap-3.5"
+                  >
                     <button
                       type="button"
-                      onClick={() => onSelectQuestion(q.id)}
-                      className="text-left text-[15px] font-medium text-[#221D1E] hover:text-[#A64258] transition-colors leading-snug"
-                    >
-                      <MathText text={q.title} />
-                    </button>
-
-                    <span
-                      className={`text-[11.5px] font-medium px-2.5 py-0.5 rounded-lg border shrink-0 whitespace-nowrap ${
-                        q.isAnswered
-                          ? 'border-[#EFE2E2] bg-[#FCF6F6] text-[#7B6F71]'
-                          : 'border-[#F2CECA] bg-[#FFE4E1] text-[#A64258]'
+                      onClick={() => onToggleUpvote(q.id)}
+                      aria-label={`Upvote question: ${q.title}`}
+                      className={`flex flex-col items-center justify-center min-w-[44px] min-h-[50px] py-1.5 rounded-2xl text-[12px] shrink-0 transition-colors ${
+                        q.upvotedByMe
+                          ? 'bg-[#141212] text-[#FFFFFF] font-semibold'
+                          : 'bg-[#FCEBE8] text-[#141212] hover:bg-[#FBBFB5]'
                       }`}
                     >
-                      {q.verifiedByFaculty
-                        ? 'Verified'
-                        : q.isAnswered
-                        ? 'Answered'
-                        : 'Unanswered'}
-                    </span>
-                  </div>
-
-                  <div className="mt-2 flex flex-wrap items-center justify-between gap-2 text-[12.5px] text-[#7B6F71]">
-                    <div className="flex flex-wrap items-center gap-1.5">
-                      <span>{q.isAnonymous ? 'Anonymous' : q.studentName}</span>
-                      <span aria-hidden="true">·</span>
-                      <span>{q.subject}</span>
-                      <span aria-hidden="true">·</span>
-                      <span>{q.timestamp}</span>
-                    </div>
-
-                    <button
-                      type="button"
-                      onClick={() => onSelectQuestion(q.id)}
-                      className="min-h-[32px] inline-flex items-center gap-1.5 text-[#7B6F71] hover:text-[#A64258] transition-colors whitespace-nowrap shrink-0"
-                    >
-                      <MessageSquare className="w-3.5 h-3.5" strokeWidth={1.85} />
-                      <span className="tabular-nums">
-                        {q.replies.length}{' '}
-                        {q.replies.length === 1 ? 'reply' : 'replies'}
-                      </span>
+                      <ArrowUp className="w-3.5 h-3.5" strokeWidth={2.2} />
+                      <span className="tabular-nums mt-0.5">{q.upvotes}</span>
                     </button>
+
+                    <div className="min-w-0 flex-1 flex flex-col justify-between">
+                      <div>
+                        <div className="flex items-start justify-between gap-2.5">
+                          <button
+                            type="button"
+                            onClick={() => onSelectQuestion(q.id)}
+                            className="text-left text-[15px] font-semibold text-[#141212] leading-snug"
+                          >
+                            <MathText text={q.title} />
+                          </button>
+
+                          <span
+                            className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full shrink-0 whitespace-nowrap ${
+                              q.isAnswered
+                                ? 'bg-[#FCEBE8] text-[#6E5B59]'
+                                : 'bg-[#FBBFB5] text-[#141212]'
+                            }`}
+                          >
+                            {q.verifiedByFaculty
+                              ? 'Verified'
+                              : q.isAnswered
+                              ? 'Answered'
+                              : 'Unanswered'}
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="mt-3 flex flex-wrap items-center justify-between gap-2 text-[12px] text-[#6E5B59]">
+                        <div className="flex flex-wrap items-center gap-1.5">
+                          <span>{q.isAnonymous ? 'Anonymous' : q.studentName}</span>
+                          <span aria-hidden="true">·</span>
+                          <span>{q.subject}</span>
+                        </div>
+
+                        <button
+                          type="button"
+                          onClick={() => onSelectQuestion(q.id)}
+                          className="inline-flex items-center gap-1 text-[#141212] font-medium whitespace-nowrap shrink-0"
+                        >
+                          <MessageSquare className="w-3.5 h-3.5" strokeWidth={1.85} />
+                          <span className="tabular-nums">{q.replies.length}</span>
+                        </button>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-            ))
+                ))
+              )}
+            </div>
           )}
         </div>
-      )}
+      </div>
 
-      {/* iOS Bottom Sheet / Desktop Centered Modal for Ask Community */}
+      {/* Native iOS Sheet Modal for Ask Community */}
       {isComposerOpen && (
         <div
           role="dialog"
           aria-modal="true"
           aria-labelledby="ask-community-title"
-          className="fixed inset-0 z-50 bg-[#221D1E]/35 backdrop-blur-xs flex items-end sm:items-center justify-center sm:p-4"
+          className="fixed inset-0 z-50 bg-[#141212]/35 backdrop-blur-xs flex items-end sm:items-center justify-center sm:p-4"
         >
-          <div className="w-full sm:max-w-lg bg-[#FCF6F6] border-t sm:border border-[#EFE2E2] rounded-t-3xl sm:rounded-2xl p-5 sm:p-6 space-y-4">
-            <div className="w-10 h-1.5 bg-[#DFC8C8] rounded-full mx-auto mb-1 sm:hidden" />
+          <div className="w-full sm:max-w-lg bg-[#FCEBE8] rounded-t-[32px] sm:rounded-[28px] p-5 sm:p-6 space-y-4">
+            <div className="w-10 h-1.5 bg-[#DFC1BD] rounded-full mx-auto -mt-1 sm:hidden" />
 
-            <div className="flex items-center justify-between pb-3 border-b border-[#EFE2E2]">
-              <h2 id="ask-community-title" className="text-[17px] font-semibold text-[#221D1E]">
+            <div className="flex items-center justify-between pb-3 border-b border-[#EED0CC]">
+              <h2 id="ask-community-title" className="text-[18px] font-bold text-[#141212]">
                 Ask the community
               </h2>
               <button
                 type="button"
                 onClick={() => setIsComposerOpen(false)}
                 aria-label="Close modal"
-                className="min-w-[36px] min-h-[36px] flex items-center justify-center rounded-full bg-[#F4E3E3] text-[#7B6F71] hover:text-[#221D1E]"
+                className="w-9 h-9 flex items-center justify-center rounded-full bg-[#F6D5D0] text-[#141212]"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -410,7 +410,7 @@ export const CommunityView: React.FC<CommunityViewProps> = ({
 
             <form onSubmit={handleCreateSubmit} className="space-y-4">
               <div>
-                <label htmlFor="comm-subject" className="block text-[12.5px] font-medium text-[#7B6F71] mb-1">
+                <label htmlFor="comm-subject" className="block text-[12.5px] font-semibold text-[#6E5B59] mb-1">
                   Subject
                 </label>
                 <select
@@ -419,7 +419,7 @@ export const CommunityView: React.FC<CommunityViewProps> = ({
                   onChange={(e) =>
                     setNewSubject(e.target.value as Exclude<SubjectName, 'General'>)
                   }
-                  className="w-full min-h-[42px] px-3 py-2 bg-[#FFFFFF] border border-[#EFE2E2] rounded-xl text-[14px] text-[#221D1E] focus:outline-none focus:border-[#C45B72]"
+                  className="w-full min-h-[42px] px-4 py-2 bg-[#FFF9F8] rounded-2xl text-[14px] font-medium text-[#141212] focus:outline-none"
                 >
                   {SUBJECT_LIST.map((s) => (
                     <option key={s} value={s}>
@@ -430,7 +430,7 @@ export const CommunityView: React.FC<CommunityViewProps> = ({
               </div>
 
               <div>
-                <label htmlFor="comm-title" className="block text-[12.5px] font-medium text-[#7B6F71] mb-1">
+                <label htmlFor="comm-title" className="block text-[12.5px] font-semibold text-[#6E5B59] mb-1">
                   Question title
                 </label>
                 <input
@@ -440,12 +440,12 @@ export const CommunityView: React.FC<CommunityViewProps> = ({
                   value={newTitle}
                   onChange={(e) => setNewTitle(e.target.value)}
                   placeholder="Summarize what you are stuck on..."
-                  className="w-full min-h-[42px] px-3.5 py-2 bg-[#FFFFFF] border border-[#EFE2E2] rounded-xl text-[14px] text-[#221D1E] placeholder:text-[#7B6F71] focus:outline-none focus:border-[#C45B72]"
+                  className="w-full min-h-[42px] px-4 py-2 bg-[#FFF9F8] rounded-2xl text-[14px] text-[#141212] placeholder:text-[#6E5B59] focus:outline-none"
                 />
               </div>
 
               <div>
-                <label htmlFor="comm-body" className="block text-[12.5px] font-medium text-[#7B6F71] mb-1">
+                <label htmlFor="comm-body" className="block text-[12.5px] font-semibold text-[#6E5B59] mb-1">
                   Details & what you tried
                 </label>
                 <textarea
@@ -455,16 +455,16 @@ export const CommunityView: React.FC<CommunityViewProps> = ({
                   value={newBody}
                   onChange={(e) => setNewBody(e.target.value)}
                   placeholder="Share your steps or where your reasoning breaks down..."
-                  className="w-full px-3.5 py-2.5 bg-[#FFFFFF] border border-[#EFE2E2] rounded-xl text-[14px] text-[#221D1E] placeholder:text-[#7B6F71] focus:outline-none focus:border-[#C45B72]"
+                  className="w-full px-4 py-2.5 bg-[#FFF9F8] rounded-2xl text-[14px] text-[#141212] placeholder:text-[#6E5B59] focus:outline-none"
                 />
               </div>
 
-              <label className="min-h-[40px] flex items-center gap-2.5 text-[13.5px] text-[#221D1E] cursor-pointer select-none">
+              <label className="min-h-[40px] flex items-center gap-2.5 text-[13.5px] font-medium text-[#141212] cursor-pointer select-none">
                 <input
                   type="checkbox"
                   checked={isAnonymous}
                   onChange={(e) => setIsAnonymous(e.target.checked)}
-                  className="w-4 h-4 accent-[#C45B72] rounded"
+                  className="w-4 h-4 accent-[#141212] rounded"
                 />
                 <span>Post anonymously (hide my name from classmates)</span>
               </label>
@@ -473,13 +473,13 @@ export const CommunityView: React.FC<CommunityViewProps> = ({
                 <button
                   type="button"
                   onClick={() => setIsComposerOpen(false)}
-                  className="min-h-[42px] px-4 py-2 rounded-xl border border-[#EFE2E2] bg-[#FFFFFF] text-[13.5px] font-medium text-[#221D1E] hover:bg-[#FCF6F6]"
+                  className="min-h-[42px] px-4 py-2 rounded-full bg-[#FFF9F8] text-[13.5px] font-semibold text-[#141212]"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="min-h-[42px] px-5 py-2 rounded-xl bg-[#C45B72] text-[#FFFFFF] text-[13.5px] font-semibold hover:bg-[#A64258]"
+                  className="min-h-[42px] px-5 py-2 rounded-full bg-[#141212] text-[#FFFFFF] text-[13.5px] font-semibold hover:bg-[#2B2626]"
                 >
                   Publish question
                 </button>

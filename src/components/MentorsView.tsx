@@ -1,7 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { Check, Search } from 'lucide-react';
 import { Mentor, MentorHelpRequest } from '../types/doubtly';
-import { Avatar } from './Avatar';
 
 interface MentorsViewProps {
   mentors: Mentor[];
@@ -33,150 +32,151 @@ export const MentorsView: React.FC<MentorsViewProps> = ({
   }, [mentors, roleFilter, searchQuery]);
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div>
-        <h1 className="text-[26px] sm:text-[30px] font-bold tracking-[-0.025em] text-[#221D1E]">
-          Mentors
-        </h1>
-        <p className="mt-0.5 text-[13.5px] text-[#7B6F71]">
-          Course faculty and senior undergraduate mentors available for one-on-one clarification.
-        </p>
-      </div>
-
-      {/* iOS Search & Segmented Filter */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-        <div className="relative flex-1 max-w-md">
-          <Search
-            className="w-4 h-4 text-[#7B6F71] absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none"
-            strokeWidth={1.85}
-          />
+    <div className="min-h-full bg-[#FBBFB5]">
+      {/* Top Coral Peach Header Zone */}
+      <div className="px-4 sm:px-8 pt-6 pb-7 max-w-5xl mx-auto">
+        <div className="flex items-center gap-2.5 bg-[#FFFFFF] rounded-full px-4 h-12 shadow-[0_2px_10px_rgba(20,18,18,0.05)] max-w-xl">
+          <Search className="w-4 h-4 text-[#6E5B59] shrink-0" strokeWidth={2} />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search by name, department, or topic..."
-            className="w-full min-h-[42px] pl-10 pr-3.5 py-2 bg-[#FFFFFF] border border-[#EFE2E2] rounded-xl text-[14px] text-[#221D1E] placeholder:text-[#7B6F71] focus:outline-none focus:border-[#C45B72]"
+            placeholder="Search mentors by name, department, or topic..."
+            className="flex-1 min-w-0 bg-transparent text-[14.5px] text-[#141212] placeholder:text-[#6E5B59] focus:outline-none"
           />
-        </div>
-
-        <div className="inline-flex items-center bg-[#F4E3E3] p-1 rounded-xl self-start">
-          {(['All', 'Faculty', 'Senior Mentor'] as const).map((tab) => (
-            <button
-              key={tab}
-              type="button"
-              onClick={() => setRoleFilter(tab)}
-              className={`min-h-[34px] px-3.5 py-1 rounded-lg text-[12.5px] transition-all whitespace-nowrap shrink-0 ${
-                roleFilter === tab
-                  ? 'bg-[#FFFFFF] text-[#221D1E] font-semibold shadow-[0_1px_2px_rgba(166,66,88,0.08)]'
-                  : 'text-[#7B6F71] hover:text-[#221D1E] font-medium'
-              }`}
-            >
-              {tab === 'Senior Mentor' ? 'Senior Mentors' : tab}
-            </button>
-          ))}
         </div>
       </div>
 
-      {/* iOS Inset Grouped Mentor Directory */}
-      <div className="border border-[#EFE2E2] rounded-2xl bg-[#FFFFFF] divide-y divide-[#EFE2E2] overflow-hidden shadow-[0_1px_3px_rgba(166,66,88,0.04)]">
-        {filteredMentors.length === 0 ? (
-          <div className="py-12 px-6 text-center text-[13.5px] text-[#7B6F71]">
-            No mentors match your search.
-          </div>
-        ) : (
-          filteredMentors.map((mentor) => {
-            const existingRequest = sentRequests.find((r) => r.mentorId === mentor.id);
-            return (
-              <div
-                key={mentor.id}
-                className="p-4 sm:px-5 sm:py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4"
-              >
-                <div className="flex items-start gap-3.5 min-w-0">
-                  <Avatar
-                    src={mentor.avatarUrl}
-                    alt={mentor.name}
-                    initials={mentor.initials}
-                    sizeClass="w-11 h-11"
-                  />
+      {/* Curved Pale Misty Rose Main Sheet */}
+      <div className="bg-[#FCEBE8] rounded-t-[32px] min-h-[calc(100vh-110px)] px-4 sm:px-8 pt-7 pb-28 md:pb-12">
+        <div className="max-w-5xl mx-auto space-y-6">
+          <div className="flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <h1 className="text-[28px] sm:text-[32px] font-bold tracking-[-0.03em] text-[#141212] leading-tight">
+                Mentors
+              </h1>
+              <p className="mt-0.5 text-[13px] text-[#6E5B59]">
+                Faculty &amp; senior undergraduate mentors
+              </p>
+            </div>
 
-                  <div className="min-w-0 space-y-1">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <h2 className="text-[15px] font-semibold text-[#221D1E]">
-                        {mentor.name}
-                      </h2>
-                      <span className="text-[12px] text-[#7B6F71]">
-                        {mentor.role} · {mentor.yearOrTitle}
+            <div className="flex items-center gap-2">
+              {(['All', 'Faculty', 'Senior Mentor'] as const).map((tab) => (
+                <button
+                  key={tab}
+                  type="button"
+                  onClick={() => setRoleFilter(tab)}
+                  className={`min-h-[36px] px-4 py-1.5 rounded-full text-[13px] font-medium transition-all whitespace-nowrap shrink-0 ${
+                    roleFilter === tab
+                      ? 'bg-[#141212] text-[#FFFFFF]'
+                      : 'border border-[#141212]/35 text-[#141212] hover:bg-[#F6D5D0]/70'
+                  }`}
+                >
+                  {tab === 'Senior Mentor' ? 'Seniors' : tab}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Picture-Free Blush Tile Directory */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {filteredMentors.length === 0 ? (
+              <div className="md:col-span-2 py-12 px-6 text-center text-[13.5px] text-[#6E5B59] bg-[#FFF9F8] rounded-[24px]">
+                No mentors match your search.
+              </div>
+            ) : (
+              filteredMentors.map((mentor) => {
+                const existingRequest = sentRequests.find((r) => r.mentorId === mentor.id);
+                return (
+                  <div
+                    key={mentor.id}
+                    className="bg-[#FFF9F8] rounded-[24px] p-5 flex flex-col justify-between gap-4"
+                  >
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="flex items-center gap-3.5 min-w-0">
+                        <span className="w-11 h-11 rounded-full bg-[#F6D5D0] flex items-center justify-center text-[13px] font-bold text-[#141212] shrink-0">
+                          {mentor.initials}
+                        </span>
+                        <div className="min-w-0">
+                          <h2 className="text-[15.5px] font-bold text-[#141212] truncate">
+                            {mentor.name}
+                          </h2>
+                          <p className="text-[12.5px] text-[#6E5B59] truncate">
+                            {mentor.role} · {mentor.department}
+                          </p>
+                        </div>
+                      </div>
+
+                      <span
+                        className={`text-[11.5px] font-semibold px-2.5 py-1 rounded-full shrink-0 whitespace-nowrap ${
+                          mentor.isAvailableNow
+                            ? 'bg-[#FBBFB5] text-[#141212]'
+                            : 'bg-[#FCEBE8] text-[#6E5B59]'
+                        }`}
+                      >
+                        {mentor.availability}
                       </span>
                     </div>
 
-                    <p className="text-[13px] text-[#7B6F71]">
-                      {mentor.department}
-                    </p>
-
-                    <p className="text-[13px] text-[#221D1E]/85">
+                    <p className="text-[13.5px] text-[#141212]/85 leading-relaxed">
                       {mentor.expertise.join(' · ')}
                     </p>
+
+                    <div className="flex items-center justify-between gap-3 pt-1">
+                      <span className="text-[12px] text-[#6E5B59] truncate">
+                        {mentor.officeHours}
+                      </span>
+
+                      <button
+                        type="button"
+                        onClick={() => onRequestHelp(mentor)}
+                        className={`min-h-[38px] inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-[13px] font-semibold transition-all whitespace-nowrap shrink-0 active:scale-95 ${
+                          existingRequest
+                            ? 'bg-[#141212] text-[#FFFFFF]'
+                            : 'bg-[#FBBFB5] text-[#141212] hover:bg-[#F7ACA0]'
+                        }`}
+                      >
+                        {existingRequest ? (
+                          <>
+                            <Check className="w-3.5 h-3.5" strokeWidth={2.2} />
+                            <span>Requested</span>
+                          </>
+                        ) : (
+                          <span>Request help</span>
+                        )}
+                      </button>
+                    </div>
                   </div>
-                </div>
+                );
+              })
+            )}
+          </div>
 
-                <div className="flex sm:flex-col items-center sm:items-end justify-between gap-2 shrink-0">
-                  <span
-                    className={`text-[12px] font-medium px-2.5 py-0.5 rounded-lg border whitespace-nowrap ${
-                      mentor.isAvailableNow
-                        ? 'border-[#F2CECA] bg-[#FFE4E1]/70 text-[#A64258]'
-                        : 'border-[#EFE2E2] bg-[#FCF6F6] text-[#7B6F71]'
-                    }`}
+          {sentRequests.length > 0 && (
+            <section className="space-y-2.5">
+              <h3 className="text-[14px] font-semibold text-[#141212] px-1">
+                Active mentor requests
+              </h3>
+              <div className="space-y-2">
+                {sentRequests.map((req) => (
+                  <div
+                    key={req.id}
+                    className="bg-[#F6D5D0] rounded-[18px] px-4 py-3 flex flex-wrap items-center justify-between gap-2 text-[13.5px]"
                   >
-                    {mentor.availability}
-                  </span>
-
-                  <button
-                    type="button"
-                    onClick={() => onRequestHelp(mentor)}
-                    className={`min-h-[40px] inline-flex items-center gap-1.5 px-4 py-1.5 rounded-xl text-[13px] font-semibold transition-all whitespace-nowrap shrink-0 active:scale-[0.97] ${
-                      existingRequest
-                        ? 'border border-[#EFE2E2] bg-[#FCF6F6] text-[#A64258]'
-                        : 'bg-[#FFE4E1] text-[#A64258] hover:bg-[#F7D3CF]'
-                    }`}
-                  >
-                    {existingRequest ? (
-                      <>
-                        <Check className="w-3.5 h-3.5 text-[#C45B72]" strokeWidth={2} />
-                        <span>Requested</span>
-                      </>
-                    ) : (
-                      <span>Request help</span>
-                    )}
-                  </button>
-                </div>
+                    <div className="min-w-0">
+                      <span className="font-semibold text-[#141212]">{req.mentorName}</span>
+                      <span className="text-[#6E5B59]"> · {req.topic}</span>
+                    </div>
+                    <span className="text-[12px] font-semibold text-[#141212]">
+                      {req.createdAt}
+                    </span>
+                  </div>
+                ))}
               </div>
-            );
-          })
-        )}
+            </section>
+          )}
+        </div>
       </div>
-
-      {sentRequests.length > 0 && (
-        <section className="space-y-2.5">
-          <h3 className="text-[13.5px] font-semibold text-[#7B6F71] px-1">
-            Active mentor requests
-          </h3>
-          <ul className="border border-[#EFE2E2] rounded-2xl bg-[#FFFFFF] divide-y divide-[#EFE2E2] overflow-hidden">
-            {sentRequests.map((req) => (
-              <li
-                key={req.id}
-                className="px-4 py-3.5 flex flex-wrap items-center justify-between gap-2 text-[13.5px]"
-              >
-                <div className="min-w-0">
-                  <span className="font-semibold text-[#221D1E]">{req.mentorName}</span>
-                  <span className="text-[#7B6F71]"> · {req.topic}</span>
-                </div>
-                <span className="text-[12px] font-medium text-[#A64258]">{req.createdAt}</span>
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
     </div>
   );
 };

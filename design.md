@@ -1,50 +1,33 @@
 # DOUBTLY — Design System & Product Specification (`design.md`)
 
-**DOUBTLY** is an intelligent doubt-clearing and peer-learning platform for first-year university students, styled with an **iOS / iPadOS native aesthetic** and a **Misty Rose & Pale Pink/Blush** palette across mobile and desktop viewports.
+**DOUBTLY** is an intelligent doubt-clearing and peer-learning application for first-year students, designed as a native **iOS / iPadOS app** with a **Misty Rose, Coral Peach, and Pale Blush** two-tone curved sheet aesthetic, fully responsive across mobile and desktop.
 
 ---
 
-## 1. Design Philosophy
+## 1. Visual Architecture (Two-Tone Curved Sheet System)
 
-- **Native iOS Clarity & Warmth:** Combines iOS inset grouped lists, translucent navigation bars, segmented controls, and bottom-sheet drawers on mobile with a spacious multi-column iPadOS/macOS sidebar workspace on PC.
-- **Tactile & Ergonomic:** Every interactive row, tab, and action button honors a minimum `44px` touch hitbox on mobile and crisp hover/active states on desktop.
-- **Restrained Misty Rose Palette:** Uses soft misty rose and pale blush surfaces to create a calm, anxiety-reducing study environment without visual clutter.
+- **Top Header Band (`#FBBFB5`):** Warm coral-peach header holding the primary white pill search/question bar (`#FFFFFF`), page context, and compact action pills.
+- **Curved Overlapping Sheet (`#FCEBE8`, `rounded-t-[32px]`):** Pale misty rose main sheet resting cleanly above the coral-peach band.
+- **Blush Content Tiles (`#F6D5D0` & `#FFF9F8`, `rounded-[22px]`):** Borderless tonal cards with generous padding (`16px`–`20px`) and crisp hierarchy.
+- **High-Contrast Controls (`#141212`):** Active filter pills use solid ink black with white text; inactive pills use subtle dark hairline outlines.
+- **No Profile Pictures / No Display Photos:** Profile, navigation, and mentor cards use clean typography and initials monograms—never user portrait photos.
 
 ---
 
-## 2. Color System (Misty Rose & Pale Pink / Blush)
+## 2. Color Tokens
 
 | Token | Hex | Role |
 | --- | --- | --- |
-| **Canvas (Grouped Background)** | `#FCF6F6` | Soft blush-white primary background |
-| **Elevated Surface** | `#FFFFFF` | Inset grouped cards, modals, and inputs |
-| **Sidebar Tint** | `#F9EFEF` | Subtle warm blush sidebar backdrop on desktop |
-| **Misty Rose** | `#FFE4E1` | Active navigation highlights, icon tiles, subtle emphasis |
-| **Pale Blush** | `#F8E8E8` | Segmented control track, soft hover surfaces |
-| **Primary Rose Accent** | `#C45B72` | Active tab icons, primary rose buttons, progress fills |
-| **Deep Rose** | `#A64258` | High-contrast text links and hover states |
-| **Primary Ink** | `#221D1E` | Warm charcoal headings and body copy |
-| **Secondary Text** | `#7B6F71` | Muted metadata, timestamps, secondary labels |
-| **Separator (Hairline)** | `#EFE2E2` | Crisp `1px` dividers and card borders |
+| **Header Peach** | `#FBBFB5` | Top navigation zone & soft action buttons |
+| **Misty Rose Sheet** | `#FCEBE8` | Primary curved canvas & desktop sidebar |
+| **Blush Tile** | `#F6D5D0` | Grid cards, prompt tiles, callout blocks |
+| **Crisp Blush Surface** | `#FFF9F8` | Structured reading sheets, modals, active forms |
+| **Ink Black** | `#141212` | Primary headings, active pill, floating mobile dock |
+| **Muted Rose-Taupe** | `#6E5B59` | Secondary labels and timestamps |
 
 ---
 
-## 3. Typography & Surface Geometry
+## 3. Responsive Mobile & PC Behavior
 
-- **Sans-Serif:** `Plus Jakarta Sans` (paired with Apple system fallbacks `-apple-system, BlinkMacSystemFont, "SF Pro Text"`).
-- **Monospace:** `IBM Plex Mono` for course codes, inline code, and `tabular-nums` alignment.
-- **Mathematics:** `KaTeX` for inline (`$...$`) and block (`$$...$$`) equations.
-- **iOS Surface Radii:** `rounded-2xl` (`16px`) for grouped list containers and cards, `rounded-xl` (`12px`) for buttons, inputs, and thumbnails, `rounded-t-3xl` (`24px`) for mobile bottom sheets.
-
----
-
-## 4. Responsive Navigation Architecture
-
-### Mobile (`< 768px`)
-- **Sticky Translucent Navigation Bar (`48px`):** `backdrop-blur-md bg-[#FCF6F6]/85` with current view title, `DOUBTLY` mark, and Profile avatar button.
-- **Fixed iOS Tab Bar (`56px`):** Translucent bottom bar (`backdrop-blur-lg bg-[#FCF6F6]/90 border-t border-[#EFE2E2]`) with 5 thumb-friendly tabs (`Overview`, `Ask`, `Community`, `Resources`, `Mentors`). Combined sticky height stays well within 15% of mobile viewport height.
-- **Bottom Sheets:** Dialogs (`Ask Community`, `Request Help`, `Resource Preview`) anchor to the bottom on mobile (`rounded-t-3xl`) with a centered drag handle affordance.
-
-### Desktop / PC (`>= 768px`)
-- **Fixed iPadOS/macOS Sidebar (`256px`):** Translucent blush sidebar (`#F9EFEF`) with `DOUBTLY` brand lockup, 5 grouped navigation rows, and bottom Student Profile button.
-- **Multi-Column Workspace (`max-w-5xl`–`max-w-6xl`):** Overview, Community, Mentors, Resources, and Profile expand naturally across 2-column and 3-column desktop grids, while Ask Doubt maintains an optimal `max-w-3xl` editorial reading measure.
+- **Mobile (`< 768px`):** Edge-to-edge native iOS layout with coral-peach top header, white pill search/ask input, curved misty rose sheet, 2-column blush tile grids, bottom-anchored modal sheets, and a sleek floating dark dock (`#141212`) at the bottom.
+- **Desktop / PC (`>= 768px`):** Fixed `240px` left iPadOS sidebar with active black pill navigation and picture-free Profile trigger, paired with a fluid multi-column (`max-w-5xl`) coral-peach + curved misty rose workspace.

@@ -299,7 +299,7 @@ export default function App() {
   );
 
   return (
-    <div className="min-h-screen bg-[#FCF6F6] text-[#221D1E]">
+    <div className="min-h-screen bg-[#FCEBE8] text-[#141212]">
       <Sidebar
         activeTab={activeTab}
         onNavigate={(tab) => {
@@ -311,124 +311,123 @@ export default function App() {
         profile={profile}
       />
 
-      <main className="md:pl-64 pb-24 md:pb-12">
-        <div className="max-w-5xl mx-auto px-4 sm:px-8 pt-5 sm:pt-9 pb-8">
-          {activeTab === 'overview' && (
-            <OverviewView
-              recentDoubts={recentDoubts}
-              mentors={mentors}
-              resolvedCount={profile.weeklyCompletedDoubts}
-              communityRepliesCount={myRepliesCount + 3}
-              savedResourcesCount={bookmarkedResourceIds.length}
-              onAskQuickQuestion={handleQuickQuestionFromOverview}
-              onOpenRecentDoubt={handleOpenRecentDoubt}
-              onNavigate={setActiveTab}
-              onRequestMentor={(mentor) => openMentorRequestModal(mentor)}
-            />
-          )}
+      <main className="md:pl-60 min-h-screen">
+        {activeTab === 'overview' && (
+          <OverviewView
+            recentDoubts={recentDoubts}
+            mentors={mentors}
+            resolvedCount={profile.weeklyCompletedDoubts}
+            communityRepliesCount={myRepliesCount + 3}
+            savedResourcesCount={bookmarkedResourceIds.length}
+            onAskQuickQuestion={handleQuickQuestionFromOverview}
+            onOpenRecentDoubt={handleOpenRecentDoubt}
+            onNavigate={setActiveTab}
+            onRequestMentor={(mentor) => openMentorRequestModal(mentor)}
+          />
+        )}
 
-          {activeTab === 'ask' && (
-            <AskDoubtView
-              exchanges={exchanges}
-              activeExchangeId={activeExchangeId}
-              savedExchangeIds={savedExchangeIds}
-              isLoading={isAiLoading}
-              errorMessage={aiError}
-              onSelectExchange={setActiveExchangeId}
-              onSubmitQuestion={handleResolveWithAI}
-              onToggleSave={handleToggleSaveExchange}
-              onVoteHelpful={handleVoteHelpful}
-              onEscalateToMentor={handleEscalateExchangeToMentor}
-              onDismissError={() => setAiError(null)}
-            />
-          )}
+        {activeTab === 'ask' && (
+          <AskDoubtView
+            exchanges={exchanges}
+            activeExchangeId={activeExchangeId}
+            savedExchangeIds={savedExchangeIds}
+            isLoading={isAiLoading}
+            errorMessage={aiError}
+            onSelectExchange={setActiveExchangeId}
+            onSubmitQuestion={handleResolveWithAI}
+            onToggleSave={handleToggleSaveExchange}
+            onVoteHelpful={handleVoteHelpful}
+            onEscalateToMentor={handleEscalateExchangeToMentor}
+            onDismissError={() => setAiError(null)}
+          />
+        )}
 
-          {activeTab === 'community' && (
-            <CommunityView
-              questions={communityQuestions}
-              selectedQuestionId={selectedCommunityId}
-              onSelectQuestion={setSelectedCommunityId}
-              onToggleUpvote={handleToggleCommunityUpvote}
-              onAddReply={handleAddCommunityReply}
-              onCreateQuestion={handleCreateCommunityQuestion}
-            />
-          )}
+        {activeTab === 'community' && (
+          <CommunityView
+            questions={communityQuestions}
+            selectedQuestionId={selectedCommunityId}
+            onSelectQuestion={setSelectedCommunityId}
+            onToggleUpvote={handleToggleCommunityUpvote}
+            onAddReply={handleAddCommunityReply}
+            onCreateQuestion={handleCreateCommunityQuestion}
+          />
+        )}
 
-          {activeTab === 'resources' && (
-            <ResourcesView
-              resources={INITIAL_RESOURCES}
-              bookmarkedIds={bookmarkedResourceIds}
-              onToggleBookmark={handleToggleResourceBookmark}
-            />
-          )}
+        {activeTab === 'resources' && (
+          <ResourcesView
+            resources={INITIAL_RESOURCES}
+            bookmarkedIds={bookmarkedResourceIds}
+            onToggleBookmark={handleToggleResourceBookmark}
+          />
+        )}
 
-          {activeTab === 'mentors' && (
-            <MentorsView
-              mentors={mentors}
-              sentRequests={sentRequests}
-              onRequestHelp={(mentor) => openMentorRequestModal(mentor)}
-            />
-          )}
+        {activeTab === 'mentors' && (
+          <MentorsView
+            mentors={mentors}
+            sentRequests={sentRequests}
+            onRequestHelp={(mentor) => openMentorRequestModal(mentor)}
+          />
+        )}
 
-          {activeTab === 'profile' && (
-            <ProfileView
-              profile={profile}
-              exchanges={exchanges}
-              savedExchangeIds={savedExchangeIds}
-              resources={INITIAL_RESOURCES}
-              bookmarkedResourceIds={bookmarkedResourceIds}
-              communityQuestions={communityQuestions}
-              onOpenExchange={(id) => {
-                setActiveExchangeId(id);
-                setActiveTab('ask');
-              }}
-              onOpenCommunityQuestion={(id) => {
-                setSelectedCommunityId(id);
-                setActiveTab('community');
-              }}
-            />
-          )}
-        </div>
+        {activeTab === 'profile' && (
+          <ProfileView
+            profile={profile}
+            exchanges={exchanges}
+            savedExchangeIds={savedExchangeIds}
+            resources={INITIAL_RESOURCES}
+            bookmarkedResourceIds={bookmarkedResourceIds}
+            communityQuestions={communityQuestions}
+            onOpenExchange={(id) => {
+              setActiveExchangeId(id);
+              setActiveTab('ask');
+            }}
+            onOpenCommunityQuestion={(id) => {
+              setSelectedCommunityId(id);
+              setActiveTab('community');
+            }}
+          />
+        )}
       </main>
 
-      {/* iOS Bottom Sheet / Desktop Modal for Mentor Help Request */}
+      {/* Native iOS Sheet Modal for Mentor Help Request */}
       {requestModalMentor && (
         <div
           role="dialog"
           aria-modal="true"
           aria-labelledby="mentor-request-title"
-          className="fixed inset-0 z-50 bg-[#221D1E]/35 backdrop-blur-xs flex items-end sm:items-center justify-center sm:p-4"
+          className="fixed inset-0 z-50 bg-[#141212]/35 backdrop-blur-xs flex items-end sm:items-center justify-center sm:p-4"
         >
-          <div className="w-full sm:max-w-md bg-[#FCF6F6] border-t sm:border border-[#EFE2E2] rounded-t-3xl sm:rounded-2xl p-5 sm:p-6 space-y-4">
-            <div className="w-10 h-1.5 bg-[#DFC8C8] rounded-full mx-auto -mt-1 sm:hidden" />
-
-            <div className="flex items-start justify-between gap-4 pb-3 border-b border-[#EFE2E2]">
-              <div>
-                <p className="text-[12px] font-medium text-[#A64258]">
-                  {requestModalMentor.role} · {requestModalMentor.officeHours}
-                </p>
-                <h2
-                  id="mentor-request-title"
-                  className="mt-0.5 text-[16.5px] font-semibold text-[#221D1E]"
+          <div className="w-full sm:max-w-md bg-[#FCEBE8] rounded-t-[32px] sm:rounded-[28px] overflow-hidden">
+            <div className="bg-[#FBBFB5] px-5 sm:px-6 pt-4 pb-5">
+              <div className="w-10 h-1.5 bg-[#141212]/20 rounded-full mx-auto mb-3 sm:hidden" />
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <p className="text-[12px] font-semibold text-[#141212]/70">
+                    {requestModalMentor.role} · {requestModalMentor.officeHours}
+                  </p>
+                  <h2
+                    id="mentor-request-title"
+                    className="mt-0.5 text-[18px] font-bold text-[#141212]"
+                  >
+                    Request help from {requestModalMentor.name}
+                  </h2>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setRequestModalMentor(null)}
+                  aria-label="Close modal"
+                  className="w-9 h-9 flex items-center justify-center rounded-full bg-[#FCEBE8] text-[#141212] shrink-0"
                 >
-                  Request help from {requestModalMentor.name}
-                </h2>
+                  <X className="w-4 h-4" />
+                </button>
               </div>
-              <button
-                type="button"
-                onClick={() => setRequestModalMentor(null)}
-                aria-label="Close modal"
-                className="min-w-[36px] min-h-[36px] flex items-center justify-center rounded-full bg-[#F4E3E3] text-[#7B6F71] hover:text-[#221D1E]"
-              >
-                <X className="w-4 h-4" />
-              </button>
             </div>
 
-            <form onSubmit={handleSubmitMentorRequest} className="space-y-4">
+            <form onSubmit={handleSubmitMentorRequest} className="p-5 sm:p-6 space-y-4">
               <div>
                 <label
                   htmlFor="mentor-req-topic"
-                  className="block text-[12.5px] font-medium text-[#7B6F71] mb-1"
+                  className="block text-[12.5px] font-semibold text-[#6E5B59] mb-1"
                 >
                   Topic or doubt summary
                 </label>
@@ -439,14 +438,14 @@ export default function App() {
                   value={requestTopic}
                   onChange={(e) => setRequestTopic(e.target.value)}
                   placeholder="e.g., Squeeze Theorem proof or pointer reversal"
-                  className="w-full min-h-[42px] px-3.5 py-2 bg-[#FFFFFF] border border-[#EFE2E2] rounded-xl text-[14px] text-[#221D1E] placeholder:text-[#7B6F71] focus:outline-none focus:border-[#C45B72]"
+                  className="w-full min-h-[42px] px-4 py-2 bg-[#FFF9F8] rounded-2xl text-[14px] text-[#141212] placeholder:text-[#6E5B59] focus:outline-none"
                 />
               </div>
 
               <div>
                 <label
                   htmlFor="mentor-req-note"
-                  className="block text-[12.5px] font-medium text-[#7B6F71] mb-1"
+                  className="block text-[12.5px] font-semibold text-[#6E5B59] mb-1"
                 >
                   Where you are stuck (optional)
                 </label>
@@ -456,7 +455,7 @@ export default function App() {
                   value={requestNote}
                   onChange={(e) => setRequestNote(e.target.value)}
                   placeholder="Briefly describe what you already tried..."
-                  className="w-full px-3.5 py-2.5 bg-[#FFFFFF] border border-[#EFE2E2] rounded-xl text-[14px] text-[#221D1E] placeholder:text-[#7B6F71] focus:outline-none focus:border-[#C45B72]"
+                  className="w-full px-4 py-2.5 bg-[#FFF9F8] rounded-2xl text-[14px] text-[#141212] placeholder:text-[#6E5B59] focus:outline-none"
                 />
               </div>
 
@@ -464,13 +463,13 @@ export default function App() {
                 <button
                   type="button"
                   onClick={() => setRequestModalMentor(null)}
-                  className="min-h-[42px] px-4 py-2 rounded-xl border border-[#EFE2E2] bg-[#FFFFFF] text-[13.5px] font-medium text-[#221D1E] hover:bg-[#FCF6F6]"
+                  className="min-h-[42px] px-4 py-2 rounded-full bg-[#FFF9F8] text-[13.5px] font-semibold text-[#141212]"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="min-h-[42px] px-5 py-2 rounded-xl bg-[#C45B72] text-[#FFFFFF] text-[13.5px] font-semibold hover:bg-[#A64258]"
+                  className="min-h-[42px] px-5 py-2 rounded-full bg-[#141212] text-[#FFFFFF] text-[13.5px] font-semibold hover:bg-[#2B2626]"
                 >
                   Send request
                 </button>

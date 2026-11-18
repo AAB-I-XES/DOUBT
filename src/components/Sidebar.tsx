@@ -4,10 +4,10 @@ import {
   LayoutGrid,
   MessageSquareText,
   MessagesSquare,
+  User,
   Users,
 } from 'lucide-react';
 import { NavTab, StudentProfile } from '../types/doubtly';
-import { Avatar } from './Avatar';
 
 interface SidebarProps {
   activeTab: NavTab;
@@ -18,24 +18,14 @@ interface SidebarProps {
 const NAV_ITEMS: Array<{
   id: NavTab;
   label: string;
-  mobileLabel: string;
   icon: React.ComponentType<{ className?: string; strokeWidth?: number }>;
 }> = [
-  { id: 'overview', label: 'Overview', mobileLabel: 'Overview', icon: LayoutGrid },
-  { id: 'ask', label: 'Ask Doubt', mobileLabel: 'Ask AI', icon: MessageSquareText },
-  { id: 'community', label: 'Community', mobileLabel: 'Community', icon: MessagesSquare },
-  { id: 'resources', label: 'Resources', mobileLabel: 'Resources', icon: BookOpen },
-  { id: 'mentors', label: 'Mentors', mobileLabel: 'Mentors', icon: Users },
+  { id: 'overview', label: 'Overview', icon: LayoutGrid },
+  { id: 'ask', label: 'Ask Doubt', icon: MessageSquareText },
+  { id: 'community', label: 'Community', icon: MessagesSquare },
+  { id: 'resources', label: 'Resources', icon: BookOpen },
+  { id: 'mentors', label: 'Mentors', icon: Users },
 ];
-
-const TAB_TITLES: Record<NavTab, string> = {
-  overview: 'DOUBTLY',
-  ask: 'Ask Doubt',
-  community: 'Community',
-  resources: 'Resources',
-  mentors: 'Mentors',
-  profile: 'Profile',
-};
 
 export const Sidebar: React.FC<SidebarProps> = ({
   activeTab,
@@ -44,26 +34,26 @@ export const Sidebar: React.FC<SidebarProps> = ({
 }) => {
   return (
     <>
-      {/* Desktop / iPadOS Fixed Left Sidebar */}
+      {/* Desktop / PC Left Sidebar (No DP / No Photos) */}
       <aside
         aria-label="Primary navigation"
-        className="hidden md:flex md:fixed md:inset-y-0 md:left-0 md:w-64 flex-col justify-between bg-[#F9EFEF]/90 backdrop-blur-md border-r border-[#EFE2E2] px-4 py-6 z-30"
+        className="hidden md:flex md:fixed md:inset-y-0 md:left-0 md:w-60 flex-col justify-between bg-[#FCEBE8] border-r border-[#EED0CC] px-4 py-6 z-30"
       >
         <div>
           <button
             type="button"
             onClick={() => onNavigate('overview')}
-            className="w-full flex items-center gap-2.5 px-2.5 py-1.5 text-left rounded-xl hover:bg-[#FFE4E1]/50 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#C45B72]"
+            className="w-full flex items-center gap-2.5 px-3 py-2 text-left rounded-full hover:bg-[#F6D5D0]/60 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#141212]"
           >
-            <span className="w-7 h-7 rounded-lg bg-[#FFE4E1] border border-[#F2CECA] flex items-center justify-center text-[13px] font-bold text-[#A64258]">
+            <span className="w-7 h-7 rounded-full bg-[#FBBFB5] flex items-center justify-center text-[13px] font-bold text-[#141212]">
               D
             </span>
-            <span className="text-[14px] font-semibold tracking-[0.14em] text-[#221D1E] whitespace-nowrap">
+            <span className="text-[14px] font-bold tracking-[0.14em] text-[#141212] whitespace-nowrap">
               DOUBTLY
             </span>
           </button>
 
-          <nav className="mt-7 flex flex-col gap-1">
+          <nav className="mt-7 flex flex-col gap-1.5">
             {NAV_ITEMS.map((item) => {
               const Icon = item.icon;
               const isActive = activeTab === item.id;
@@ -72,15 +62,15 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   key={item.id}
                   type="button"
                   onClick={() => onNavigate(item.id)}
-                  className={`flex items-center gap-3 w-full min-h-[42px] px-3 py-2 rounded-xl text-[14px] transition-all duration-150 whitespace-nowrap shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#C45B72] ${
+                  className={`flex items-center gap-3 w-full min-h-[42px] px-4 py-2 rounded-full text-[13.5px] transition-all duration-150 whitespace-nowrap shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#141212] ${
                     isActive
-                      ? 'bg-[#FFE4E1] text-[#221D1E] font-semibold shadow-[0_1px_2px_rgba(166,66,88,0.06)]'
-                      : 'text-[#7B6F71] hover:text-[#221D1E] hover:bg-[#FFFFFF]/70 font-medium'
+                      ? 'bg-[#141212] text-[#FFFFFF] font-semibold'
+                      : 'text-[#6E5B59] hover:text-[#141212] hover:bg-[#F6D5D0]/60 font-medium'
                   }`}
                 >
                   <Icon
-                    className={`w-[18px] h-[18px] shrink-0 ${
-                      isActive ? 'text-[#C45B72]' : 'text-[#7B6F71]'
+                    className={`w-[17px] h-[17px] shrink-0 ${
+                      isActive ? 'text-[#FFFFFF]' : 'text-[#6E5B59]'
                     }`}
                     strokeWidth={isActive ? 2.1 : 1.75}
                   />
@@ -91,94 +81,81 @@ export const Sidebar: React.FC<SidebarProps> = ({
           </nav>
         </div>
 
-        {/* Bottom Student Profile Row */}
-        <div className="pt-4 border-t border-[#EFE2E2]">
+        {/* Bottom Picture-Free Student Profile Trigger */}
+        <div className="pt-4 border-t border-[#EED0CC]">
           <button
             type="button"
             onClick={() => onNavigate('profile')}
-            className={`flex items-center gap-3 w-full min-h-[48px] px-2.5 py-2 rounded-xl text-left transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#C45B72] ${
+            className={`flex items-center justify-between gap-3 w-full min-h-[48px] px-4 py-2.5 rounded-2xl text-left transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#141212] ${
               activeTab === 'profile'
-                ? 'bg-[#FFE4E1] border border-[#F2CECA]'
-                : 'bg-[#FFFFFF]/75 border border-[#EFE2E2] hover:bg-[#FFFFFF]'
+                ? 'bg-[#141212] text-[#FFFFFF]'
+                : 'bg-[#F6D5D0]/80 hover:bg-[#F6D5D0] text-[#141212]'
             }`}
           >
-            <Avatar
-              src={profile.avatarUrl}
-              alt={profile.name}
-              initials="AR"
-              sizeClass="w-8 h-8"
-            />
-            <div className="min-w-0 flex-1">
-              <p className="text-[13.5px] font-semibold text-[#221D1E] truncate">
+            <div className="min-w-0">
+              <p className="text-[13.5px] font-semibold truncate">
                 {profile.name}
               </p>
-              <p className="text-[12px] text-[#7B6F71] truncate">
+              <p
+                className={`text-[11.5px] truncate ${
+                  activeTab === 'profile' ? 'text-[#FFFFFF]/75' : 'text-[#6E5B59]'
+                }`}
+              >
                 1st Year · CS
               </p>
             </div>
+            <User
+              className={`w-4 h-4 shrink-0 ${
+                activeTab === 'profile' ? 'text-[#FFFFFF]' : 'text-[#6E5B59]'
+              }`}
+              strokeWidth={1.85}
+            />
           </button>
         </div>
       </aside>
 
-      {/* Mobile iOS Translucent Sticky Navigation Bar */}
-      <header className="md:hidden sticky top-0 z-30 flex items-center justify-between h-12 px-4 bg-[#FCF6F6]/85 backdrop-blur-md border-b border-[#EFE2E2]">
-        <button
-          type="button"
-          onClick={() => onNavigate('overview')}
-          className="min-h-[44px] flex items-center gap-2 whitespace-nowrap shrink-0"
+      {/* Mobile Floating Dark iOS Dock (Matching reference image bottom pill) */}
+      <div className="md:hidden fixed bottom-3 inset-x-0 z-40 flex justify-center px-4 pointer-events-none pb-safe">
+        <nav
+          aria-label="Mobile navigation"
+          className="pointer-events-auto flex items-center gap-1.5 bg-[#141212] text-[#FFFFFF] px-2.5 py-1.5 rounded-full shadow-[0_10px_28px_rgba(20,18,18,0.25)]"
         >
-          <span className="w-6 h-6 rounded-md bg-[#FFE4E1] border border-[#F2CECA] flex items-center justify-center text-[11px] font-bold text-[#A64258]">
-            D
-          </span>
-          <span className="text-[14px] font-semibold text-[#221D1E]">
-            {TAB_TITLES[activeTab]}
-          </span>
-        </button>
-
-        <button
-          type="button"
-          onClick={() => onNavigate('profile')}
-          aria-label="Open student profile"
-          className="min-h-[44px] min-w-[44px] flex items-center justify-end gap-2 rounded-xl active:opacity-70 whitespace-nowrap shrink-0"
-        >
-          <span className="text-[13px] font-medium text-[#A64258]">Alex</span>
-          <Avatar
-            src={profile.avatarUrl}
-            alt={profile.name}
-            initials="AR"
-            sizeClass="w-7 h-7"
-          />
-        </button>
-      </header>
-
-      {/* Mobile iOS Translucent Bottom Tab Bar */}
-      <nav
-        aria-label="Mobile navigation"
-        className="md:hidden fixed bottom-0 inset-x-0 z-40 h-14 pb-safe bg-[#FCF6F6]/90 backdrop-blur-lg border-t border-[#EFE2E2] grid grid-cols-5"
-      >
-        {NAV_ITEMS.map((item) => {
-          const Icon = item.icon;
-          const isActive = activeTab === item.id;
-          return (
-            <button
-              key={item.id}
-              type="button"
-              onClick={() => onNavigate(item.id)}
-              className={`flex flex-col items-center justify-center gap-0.5 text-[10px] tracking-tight transition-colors duration-150 active:scale-95 ${
-                isActive ? 'text-[#C45B72] font-semibold' : 'text-[#7B6F71] font-medium'
-              }`}
-            >
-              <Icon
-                className={`w-[21px] h-[21px] ${
-                  isActive ? 'text-[#C45B72]' : 'text-[#7B6F71]'
+          {NAV_ITEMS.map((item) => {
+            const Icon = item.icon;
+            const isActive = activeTab === item.id;
+            return (
+              <button
+                key={item.id}
+                type="button"
+                aria-label={item.label}
+                onClick={() => onNavigate(item.id)}
+                className={`min-w-[44px] min-h-[40px] px-3 rounded-full flex items-center justify-center gap-1.5 text-[12px] font-semibold transition-all active:scale-95 ${
+                  isActive
+                    ? 'bg-[#FFFFFF] text-[#141212]'
+                    : 'text-[#FFFFFF]/75 hover:text-[#FFFFFF]'
                 }`}
-                strokeWidth={isActive ? 2.2 : 1.75}
-              />
-              <span className="whitespace-nowrap">{item.mobileLabel}</span>
-            </button>
-          );
-        })}
-      </nav>
+              >
+                <Icon className="w-[18px] h-[18px] shrink-0" strokeWidth={2} />
+                {isActive && (
+                  <span className="whitespace-nowrap">{item.label === 'Ask Doubt' ? 'Ask' : item.label}</span>
+                )}
+              </button>
+            );
+          })}
+          <button
+            type="button"
+            aria-label="Profile"
+            onClick={() => onNavigate('profile')}
+            className={`min-w-[40px] min-h-[40px] px-2.5 rounded-full flex items-center justify-center transition-all active:scale-95 ${
+              activeTab === 'profile'
+                ? 'bg-[#FBBFB5] text-[#141212]'
+                : 'text-[#FFFFFF]/75 hover:text-[#FFFFFF]'
+            }`}
+          >
+            <User className="w-[18px] h-[18px] shrink-0" strokeWidth={2} />
+          </button>
+        </nav>
+      </div>
     </>
   );
 };

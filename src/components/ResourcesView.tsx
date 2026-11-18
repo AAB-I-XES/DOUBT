@@ -72,31 +72,18 @@ export const ResourcesView: React.FC<ResourcesViewProps> = ({
   }, [resources, subjectFilter, typeFilter, searchQuery]);
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div>
-        <h1 className="text-[26px] sm:text-[30px] font-bold tracking-[-0.025em] text-[#221D1E]">
-          Resources
-        </h1>
-        <p className="mt-0.5 text-[13.5px] text-[#7B6F71]">
-          Curated lecture notes, formula sheets, and problem sets for first-year courses.
-        </p>
-      </div>
-
-      {/* Search & Filters */}
-      <div className="space-y-3">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <div className="relative flex-1 max-w-md">
-            <Search
-              className="w-4 h-4 text-[#7B6F71] absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none"
-              strokeWidth={1.85}
-            />
+    <div className="min-h-full bg-[#FBBFB5]">
+      {/* Top Coral Peach Header Zone */}
+      <div className="px-4 sm:px-8 pt-6 pb-7 max-w-5xl mx-auto">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-2.5">
+          <div className="flex-1 flex items-center gap-2.5 bg-[#FFFFFF] rounded-full px-4 h-12 shadow-[0_2px_10px_rgba(20,18,18,0.05)]">
+            <Search className="w-4 h-4 text-[#6E5B59] shrink-0" strokeWidth={2} />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search notes, formulas, or course topics..."
-              className="w-full min-h-[42px] pl-10 pr-3.5 py-2 bg-[#FFFFFF] border border-[#EFE2E2] rounded-xl text-[14px] text-[#221D1E] placeholder:text-[#7B6F71] focus:outline-none focus:border-[#C45B72]"
+              className="flex-1 min-w-0 bg-transparent text-[14.5px] text-[#141212] placeholder:text-[#6E5B59] focus:outline-none"
             />
           </div>
 
@@ -104,167 +91,187 @@ export const ResourcesView: React.FC<ResourcesViewProps> = ({
             aria-label="Filter by document type"
             value={typeFilter}
             onChange={(e) => setTypeFilter(e.target.value as 'All' | ResourceDocType)}
-            className="min-h-[42px] text-[13.5px] font-medium text-[#221D1E] bg-[#FFFFFF] border border-[#EFE2E2] rounded-xl px-3.5 py-2 focus:outline-none focus:border-[#C45B72] self-start sm:self-auto"
+            className="h-12 text-[13.5px] font-semibold text-[#141212] bg-[#FFFFFF] rounded-full px-4 focus:outline-none self-start sm:self-auto"
           >
             {DOC_TYPES.map((t) => (
               <option key={t} value={t}>
-                {t === 'All' ? 'All document types' : t}
+                {t === 'All' ? 'All types' : t}
               </option>
             ))}
           </select>
         </div>
+      </div>
 
-        <div className="flex items-center gap-1.5 overflow-x-auto pb-1">
-          {['All', ...SUBJECT_LIST].map((subj) => (
-            <button
-              key={subj}
-              type="button"
-              onClick={() => setSubjectFilter(subj)}
-              className={`min-h-[36px] px-3.5 py-1.5 rounded-xl text-[13px] border transition-colors whitespace-nowrap shrink-0 ${
-                subjectFilter === subj
-                  ? 'border-[#E7BFC4] bg-[#FFE4E1] text-[#A64258] font-semibold'
-                  : 'border-transparent bg-[#FFFFFF]/70 text-[#7B6F71] hover:text-[#221D1E] hover:bg-[#FFFFFF]'
-              }`}
-            >
-              {subj}
-            </button>
-          ))}
+      {/* Curved Pale Misty Rose Main Sheet */}
+      <div className="bg-[#FCEBE8] rounded-t-[32px] min-h-[calc(100vh-110px)] px-4 sm:px-8 pt-7 pb-28 md:pb-12">
+        <div className="max-w-5xl mx-auto space-y-6">
+          <div>
+            <h1 className="text-[28px] sm:text-[32px] font-bold tracking-[-0.03em] text-[#141212] leading-tight">
+              Resources
+            </h1>
+            <p className="mt-0.5 text-[13px] text-[#6E5B59]">
+              Curated notes, cheat sheets, and problem sets
+            </p>
+          </div>
+
+          <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-0.5">
+            {['All', ...SUBJECT_LIST].map((subj) => (
+              <button
+                key={subj}
+                type="button"
+                onClick={() => setSubjectFilter(subj)}
+                className={`min-h-[36px] px-4 py-1.5 rounded-full text-[13px] font-medium transition-all whitespace-nowrap shrink-0 ${
+                  subjectFilter === subj
+                    ? 'bg-[#141212] text-[#FFFFFF]'
+                    : 'border border-[#141212]/35 text-[#141212] hover:bg-[#F6D5D0]/70'
+                }`}
+              >
+                {subj}
+              </button>
+            ))}
+          </div>
+
+          {/* 2-Column Mobile / 3-Column Desktop Blush Tile Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {filteredResources.length === 0 ? (
+              <div className="sm:col-span-2 lg:col-span-3 py-12 px-6 text-center text-[13.5px] text-[#6E5B59] bg-[#FFF9F8] rounded-[24px]">
+                No resources match your current filters.
+              </div>
+            ) : (
+              filteredResources.map((res) => {
+                const Icon = getDocIcon(res.docType);
+                const isBookmarked = bookmarkedIds.includes(res.id);
+                return (
+                  <div
+                    key={res.id}
+                    className="bg-[#F6D5D0] hover:bg-[#F3C9C3] rounded-[24px] p-5 flex flex-col justify-between gap-4 transition-colors"
+                  >
+                    <div className="flex items-start justify-between gap-3">
+                      <button
+                        type="button"
+                        onClick={() => setPreviewResource(res)}
+                        className="w-10 h-10 rounded-2xl bg-[#FFF9F8] flex items-center justify-center shrink-0"
+                        aria-label={`Open ${res.title}`}
+                      >
+                        <Icon className="w-4 h-4 text-[#141212]" strokeWidth={2} />
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => onToggleBookmark(res.id)}
+                        aria-label={isBookmarked ? `Remove bookmark for ${res.title}` : `Bookmark ${res.title}`}
+                        className={`w-9 h-9 rounded-full flex items-center justify-center transition-colors shrink-0 ${
+                          isBookmarked
+                            ? 'bg-[#141212] text-[#FFFFFF]'
+                            : 'bg-[#FFF9F8]/80 text-[#141212] hover:bg-[#FFF9F8]'
+                        }`}
+                      >
+                        <Bookmark
+                          className={`w-4 h-4 ${isBookmarked ? 'fill-current' : ''}`}
+                          strokeWidth={2}
+                        />
+                      </button>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() => setPreviewResource(res)}
+                      className="text-left space-y-1.5"
+                    >
+                      <p className="text-[15px] font-bold text-[#141212] leading-snug">
+                        {res.title}
+                      </p>
+                      <p className="text-[12.5px] text-[#6E5B59]">
+                        {res.subject} · {res.docType}
+                      </p>
+                    </button>
+                  </div>
+                );
+              })
+            )}
+          </div>
         </div>
       </div>
 
-      {/* iOS Inset Grouped Resource List */}
-      <div className="border border-[#EFE2E2] rounded-2xl bg-[#FFFFFF] divide-y divide-[#EFE2E2] overflow-hidden shadow-[0_1px_3px_rgba(166,66,88,0.04)]">
-        {filteredResources.length === 0 ? (
-          <div className="py-12 px-6 text-center text-[13.5px] text-[#7B6F71]">
-            No resources match your current filters.
-          </div>
-        ) : (
-          filteredResources.map((res) => {
-            const Icon = getDocIcon(res.docType);
-            const isBookmarked = bookmarkedIds.includes(res.id);
-            return (
-              <div
-                key={res.id}
-                className="p-4 sm:px-5 sm:py-3.5 flex items-center justify-between gap-4 hover:bg-[#FCF6F6] transition-colors"
-              >
-                <button
-                  type="button"
-                  onClick={() => setPreviewResource(res)}
-                  className="flex items-start gap-3.5 min-w-0 text-left flex-1 group"
-                >
-                  <div className="w-9 h-9 rounded-xl border border-[#F2CECA] bg-[#FFE4E1]/75 flex items-center justify-center shrink-0 mt-0.5">
-                    <Icon className="w-4 h-4 text-[#C45B72]" strokeWidth={1.85} />
-                  </div>
-
-                  <div className="min-w-0">
-                    <p className="text-[14.5px] font-semibold text-[#221D1E] group-hover:text-[#A64258] transition-colors truncate">
-                      {res.title}
-                    </p>
-                    <p className="mt-0.5 text-[12.5px] text-[#7B6F71] flex flex-wrap items-center gap-1.5">
-                      <span>{res.subject}</span>
-                      <span aria-hidden="true">·</span>
-                      <span>{res.docType}</span>
-                      <span aria-hidden="true">·</span>
-                      <span>{res.meta}</span>
-                    </p>
-                  </div>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => onToggleBookmark(res.id)}
-                  aria-label={isBookmarked ? `Remove bookmark for ${res.title}` : `Bookmark ${res.title}`}
-                  className={`min-w-[42px] min-h-[42px] flex items-center justify-center rounded-xl border transition-colors shrink-0 ${
-                    isBookmarked
-                      ? 'border-[#E7BFC4] bg-[#FFE4E1] text-[#C45B72]'
-                      : 'border-[#EFE2E2] bg-[#FCF6F6] text-[#7B6F71] hover:text-[#221D1E]'
-                  }`}
-                >
-                  <Bookmark
-                    className={`w-4 h-4 ${isBookmarked ? 'fill-[#C45B72]/25' : ''}`}
-                    strokeWidth={1.85}
-                  />
-                </button>
-              </div>
-            );
-          })
-        )}
-      </div>
-
-      {/* iOS Bottom Sheet / Desktop Dialog Resource Preview */}
+      {/* Resource Preview Sheet (Screen 3 Style) */}
       {previewResource && (
         <div
           role="dialog"
           aria-modal="true"
           aria-labelledby="resource-preview-title"
-          className="fixed inset-0 z-50 bg-[#221D1E]/35 backdrop-blur-xs flex items-end sm:items-center justify-center sm:p-4"
+          className="fixed inset-0 z-50 bg-[#141212]/35 backdrop-blur-xs flex items-end sm:items-center justify-center sm:p-4"
         >
-          <div className="w-full sm:max-w-xl bg-[#FCF6F6] border-t sm:border border-[#EFE2E2] rounded-t-3xl sm:rounded-2xl p-5 sm:p-6 space-y-5">
-            <div className="w-10 h-1.5 bg-[#DFC8C8] rounded-full mx-auto -mt-1 sm:hidden" />
-
-            <div className="flex items-start justify-between gap-4 pb-3 border-b border-[#EFE2E2]">
-              <div>
-                <p className="text-[12px] font-medium text-[#A64258]">
-                  {previewResource.subject} · {previewResource.docType} · {previewResource.author}
-                </p>
-                <h2 id="resource-preview-title" className="mt-1 text-[18px] font-semibold text-[#221D1E]">
-                  {previewResource.title}
-                </h2>
-              </div>
-              <button
-                type="button"
-                onClick={() => setPreviewResource(null)}
-                aria-label="Close resource preview"
-                className="min-w-[36px] min-h-[36px] flex items-center justify-center rounded-full bg-[#F4E3E3] text-[#7B6F71] hover:text-[#221D1E]"
-              >
-                <X className="w-4 h-4" />
-              </button>
-            </div>
-
-            <div className="space-y-2">
-              <h3 className="text-[12.5px] font-semibold text-[#7B6F71]">Summary</h3>
-              <p className="text-[14.5px] text-[#221D1E] leading-relaxed">
-                <MathText text={previewResource.summary} />
-              </p>
-            </div>
-
-            {previewResource.keyEquations.length > 0 && (
-              <div className="space-y-2">
-                <h3 className="text-[12.5px] font-semibold text-[#7B6F71]">Key formulas</h3>
-                <div className="space-y-2">
-                  {previewResource.keyEquations.map((eq, i) => (
-                    <MathBlock key={i} latex={eq} />
-                  ))}
+          <div className="w-full sm:max-w-xl bg-[#FCEBE8] rounded-t-[32px] sm:rounded-[28px] overflow-hidden">
+            <div className="bg-[#FBBFB5] px-5 sm:px-6 pt-4 pb-5">
+              <div className="w-10 h-1.5 bg-[#141212]/20 rounded-full mx-auto mb-3 sm:hidden" />
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <p className="text-[12px] font-semibold text-[#141212]/70">
+                    {previewResource.subject} · {previewResource.docType} · {previewResource.author}
+                  </p>
+                  <h2 id="resource-preview-title" className="mt-1 text-[20px] font-bold text-[#141212] leading-snug">
+                    {previewResource.title}
+                  </h2>
                 </div>
+                <button
+                  type="button"
+                  onClick={() => setPreviewResource(null)}
+                  aria-label="Close resource preview"
+                  className="w-9 h-9 flex items-center justify-center rounded-full bg-[#FCEBE8] text-[#141212] shrink-0"
+                >
+                  <X className="w-4 h-4" />
+                </button>
               </div>
-            )}
+            </div>
 
-            <div className="pt-3 flex items-center justify-between border-t border-[#EFE2E2]">
-              <button
-                type="button"
-                onClick={() => onToggleBookmark(previewResource.id)}
-                className="min-h-[42px] inline-flex items-center gap-1.5 px-4 py-1.5 rounded-xl border border-[#EFE2E2] bg-[#FFFFFF] text-[13.5px] font-medium text-[#221D1E] hover:border-[#C45B72]"
-              >
-                <Bookmark
-                  className={`w-4 h-4 ${
+            <div className="p-5 sm:p-6 space-y-5">
+              <div className="bg-[#FFF9F8] rounded-[22px] p-4 space-y-1.5">
+                <h3 className="text-[12px] font-semibold text-[#6E5B59]">Summary</h3>
+                <p className="text-[14.5px] text-[#141212] leading-relaxed">
+                  <MathText text={previewResource.summary} />
+                </p>
+              </div>
+
+              {previewResource.keyEquations.length > 0 && (
+                <div className="space-y-2">
+                  <h3 className="text-[12px] font-semibold text-[#6E5B59] px-1">Key formulas</h3>
+                  <div className="space-y-2">
+                    {previewResource.keyEquations.map((eq, i) => (
+                      <MathBlock key={i} latex={eq} />
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              <div className="pt-1 flex items-center justify-between gap-3">
+                <button
+                  type="button"
+                  onClick={() => onToggleBookmark(previewResource.id)}
+                  className={`min-h-[42px] inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-[13.5px] font-semibold ${
                     bookmarkedIds.includes(previewResource.id)
-                      ? 'text-[#C45B72] fill-[#C45B72]/25'
-                      : 'text-[#7B6F71]'
+                      ? 'bg-[#141212] text-[#FFFFFF]'
+                      : 'bg-[#FFF9F8] text-[#141212]'
                   }`}
-                  strokeWidth={1.85}
-                />
-                <span>
-                  {bookmarkedIds.includes(previewResource.id) ? 'Bookmarked' : 'Bookmark'}
-                </span>
-              </button>
+                >
+                  <Bookmark
+                    className={`w-4 h-4 ${
+                      bookmarkedIds.includes(previewResource.id) ? 'fill-current' : ''
+                    }`}
+                    strokeWidth={2}
+                  />
+                  <span>
+                    {bookmarkedIds.includes(previewResource.id) ? 'Bookmarked' : 'Bookmark'}
+                  </span>
+                </button>
 
-              <button
-                type="button"
-                onClick={() => setPreviewResource(null)}
-                className="min-h-[42px] px-5 py-1.5 rounded-xl bg-[#C45B72] text-[#FFFFFF] text-[13.5px] font-semibold hover:bg-[#A64258]"
-              >
-                Done
-              </button>
+                <button
+                  type="button"
+                  onClick={() => setPreviewResource(null)}
+                  className="min-h-[42px] px-5 py-2 rounded-full bg-[#FBBFB5] text-[#141212] text-[13.5px] font-semibold hover:bg-[#F7ACA0]"
+                >
+                  Done
+                </button>
+              </div>
             </div>
           </div>
         </div>

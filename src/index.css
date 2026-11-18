@@ -2,25 +2,23 @@
 @import "katex/dist/katex.min.css";
 
 @theme {
-  --font-sans: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
+  --font-sans: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 
-  --color-canvas: #FCF6F6;
-  --color-surface: #FFFFFF;
-  --color-misty: #FFE4E1;
-  --color-blush: #F8E8E8;
-  --color-rose: #C45B72;
-  --color-rose-deep: #A64258;
-  --color-ink: #221D1E;
-  --color-muted: #7B6F71;
-  --color-hairline: #EFE2E2;
+  --color-peach: #FBBFB5;
+  --color-sheet: #FCEBE8;
+  --color-tile: #F6D5D0;
+  --color-crisp: #FFF9F8;
+  --color-ink: #141212;
+  --color-muted: #6E5B59;
+  --color-hairline: #EED0CC;
 }
 
 @layer base {
   html,
   body {
-    background-color: #FCF6F6;
-    color: #221D1E;
+    background-color: #FCEBE8;
+    color: #141212;
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -29,8 +27,8 @@
   }
 
   ::selection {
-    background-color: #FFE4E1;
-    color: #221D1E;
+    background-color: #FBBFB5;
+    color: #141212;
   }
 }
 
@@ -42,18 +40,26 @@
   padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
-/* Editorial KaTeX tuning on Misty Rose canvas */
+/* Hide horizontal scrollbar on filter pill strips while preserving scroll */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* KaTeX equation containers */
 .katex-display {
   margin: 0.875rem 0;
-  padding: 0.875rem 1.125rem;
-  background-color: #FCF6F6;
-  border: 1px solid #EFE2E2;
-  border-radius: 12px;
+  padding: 0.9rem 1.15rem;
+  background-color: #FCEBE8;
+  border-radius: 16px;
   overflow-x: auto;
   overflow-y: hidden;
 }
 
 .katex {
   font-size: 1.02em;
-  color: #221D1E;
+  color: #141212;
 }
